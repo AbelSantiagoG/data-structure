@@ -1,4 +1,6 @@
 from combbox import ComboBox
+from SLL import SingleLinkedList
+from menu import Menu
 import pygame, sys
 
 class ben10:
@@ -11,13 +13,17 @@ class ben10:
         self.blue= (0, 0, 255)
         self.gray= (155, 155, 155)
 
-        pygame.init()
         self.screen= pygame.display.set_mode((1000, 700))
+        #Menu
+        self.main_menu = Menu(self.screen, {"SLL": "imágenes/list-outline.png", "DLL": "imágenes/list-outline.png", "Pilas y colas": "imágenes/list-outline.png", "Árboles": "imágenes/tree-solid.png", "Grafos": "imágenes/circle-nodes-solid.png"}, self.green, 40, "Sans Serif", 22, self.black)
+        #Instancia de sll
+        inst_sll= SingleLinkedList()
+        pygame.init()
         pygame.display.set_caption("SLL")
         self.color= (220, 220, 220) 
 
-        self.combo_rect = pygame.Rect(280, 109, 350, 50)
-        self.combo = ComboBox(self.screen, ["Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5"], self.combo_rect, self.black, "Arial", 22, 5, self.white, self.white, 40, "Seleccione una opción")
+        self.combo_rect1 = pygame.Rect(200, 270, 200, 28)
+        self.combo1 = ComboBox(self.screen, ["Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "Selecciona un método")
         self.button = pygame.Rect(504, 356, 191, 39)
         self.click_button = False
 
@@ -52,17 +58,19 @@ class ben10:
             self.screen.fill(self.color)
 
             #Zona de dibujo
-            pygame.draw.rect(self.screen, self.black, self.combo_rect, 0, 5)
-            self.combo.draw()
-            self.drawButton("Aceptar", self.gray, self.button, 0, 16, 22, True, self.black, "Consolas")
-            self.clickOnButton()
-            pygame.display.flip()
-            self.mostrarTexto("SLL", self.black, 30, 20, 20)
-            self.mostrarTexto("PARA INICIAR DEBES SELECCIONAR AL MENOS UNA IMAGEN QUE SERÁ LA CABEZA DE LA LISTA", self.black, 24, 30, 50)
-            self.dibujarImagenes(self.acuatico, 200, 100)
-            self.dibujarImagenes(self.diamante, 400, 100)
-            self.dibujarImagenes(self.cuatro_brazos, 600, 100)
-            #-------------
+            #-------------------------------------------
+            if(self.main_menu.getSelectedOption() == 0):
+                pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0, 5)
+                self.combo1.draw()
+                self.drawButton("Aceptar", self.gray, self.button, 0, 16, 22, True, self.black, "Consolas")
+                self.clickOnButton()
+                self.mostrarTexto("PARA INICIAR DEBES SELECCIONAR AL MENOS UNA IMAGEN QUE SERÁ LA CABEZA DE LA LISTA", self.black, 24, 100, 52)
+                self.dibujarImagenes(self.acuatico, 235, 95)
+                self.dibujarImagenes(self.diamante, 435, 95)
+                self.dibujarImagenes(self.bestia, 635, 95)
+            elif(self.main_menu.getSelectedOption() == 1):
+                pygame.draw.rect(self.screen, (250, 10, 20), (0, 40, self.screen.get_width(), self.screen.get_height() - 40))
+            self.main_menu.draw()
             pygame.display.flip()
 
     def mostrarTexto(self, texto, color, dimensiones, x , y):
