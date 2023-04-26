@@ -17,21 +17,25 @@ class ben10:
 
         #Rectángulos para cabezas
         self.rect1= pygame.Rect(240, 170, 130, 134)
+        self.rect2= pygame.Rect(440, 170, 130, 134)
+        self.rect3= pygame.Rect(640, 170, 130, 134)
+        self.rect4= pygame.Rect(330, 370, 130, 134)
+        self.rect5= pygame.Rect(540, 370, 130, 134) 
 
         self.screen= pygame.display.set_mode((1000, 700))
         #Menu
         self.main_menu = Menu(self.screen, {"SLL": "imágenes/list-outline.png", "DLL": "imágenes/list-outline.png", "Pilas y colas": "imágenes/list-outline.png", "Árboles": "imágenes/tree-solid.png", "Grafos": "imágenes/circle-nodes-solid.png"}, self.green, 40, "Sans Serif", 22, self.black)
         
         #Instancia de sll
-        inst_sll= SingleLinkedList()
+        self.inst_sll= SingleLinkedList()
 
         pygame.init()
         pygame.display.set_caption("SLL")
         self.color= (220, 220, 220) 
 
         #Combobox
-        self.combo_rect1 = pygame.Rect(200, 500, 200, 28)
-        self.combo1 = ComboBox(self.screen, ["Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "Selecciona un método")
+        self.combo_rect1 = pygame.Rect(285, 150, 255, 28)
+        self.combo1 = ComboBox(self.screen, ["Agregar elemento al inicio", "Agregar elemento al final", "Agregar elemento en una posicion", "Eliminar primer elemento", "Eliminar ultimo elemento", "Eliminar elemento en una posicion", "Eliminar todos los elementos", "Invertir lista", "Cambiar imagen en una posicion", "Lista vacia"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "")
         self.button = pygame.Rect(504, 500, 191, 39)
         self.click_button = False
 
@@ -77,7 +81,9 @@ class ben10:
                     self.dibujarImagenes(self.fuego, 540, 370)
                     self.tocoCabeza()
                 else:
-                    
+                    self.mostrarTexto("Single Linked List", self.black, 30, 20, 80)
+                    self.mostrarTexto("Selecciona un método", self.black, 28, 65, 152)
+                    self.mostrarTexto("Posición", self.black, 28, 670, 152)
                     pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0, 5)
                     self.combo1.draw()
                     self.drawButton("Aceptar", self.gray, self.button, 0, 16, 22, True, self.black)
@@ -91,9 +97,24 @@ class ben10:
         mousecoord= pygame.mouse.get_pos()
         if pygame.mouse.get_pressed()[0]:
             if self.rect1.collidepoint(mousecoord):
-                #Añadir cabeza a la lista
-                # self.
+                self.inst_sll.create_node_sll_unshift("Acuatico")
                 self.cambiarVentana= False
+            if self.rect2.collidepoint(mousecoord):
+                self.inst_sll.create_node_sll_unshift("Diamante")
+                self.cambiarVentana= False
+            if self.rect3.collidepoint(mousecoord):
+                self.inst_sll.create_node_sll_unshift("Bestia")
+                self.cambiarVentana= False
+            if self.rect4.collidepoint(mousecoord):
+                self.inst_sll.create_node_sll_unshift("Fantasmatico")
+                self.cambiarVentana= False
+            if self.rect5.collidepoint(mousecoord):
+                self.inst_sll.create_node_sll_unshift("Fuego")
+                self.cambiarVentana= False
+    
+    #def añadirAlInicio(self):
+        #for i in range (self.inst_sll.length):
+            #if 
 
     def mostrarTexto(self, texto, color, dimensiones, x , y):
         superficie= pygame.font.SysFont("Sans Serif", dimensiones)
