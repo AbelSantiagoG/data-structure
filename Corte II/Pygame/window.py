@@ -13,18 +13,26 @@ class ben10:
         self.blue= (0, 0, 255)
         self.gray= (155, 155, 155)
 
+        self.cambiarVentana= True
+
+        #Rectángulos para cabezas
+        self.rect1= pygame.Rect(240, 170, 130, 134)
+
         self.screen= pygame.display.set_mode((1000, 700))
         #Menu
         self.main_menu = Menu(self.screen, {"SLL": "imágenes/list-outline.png", "DLL": "imágenes/list-outline.png", "Pilas y colas": "imágenes/list-outline.png", "Árboles": "imágenes/tree-solid.png", "Grafos": "imágenes/circle-nodes-solid.png"}, self.green, 40, "Sans Serif", 22, self.black)
+        
         #Instancia de sll
         inst_sll= SingleLinkedList()
+
         pygame.init()
         pygame.display.set_caption("SLL")
         self.color= (220, 220, 220) 
 
-        self.combo_rect1 = pygame.Rect(200, 270, 200, 28)
+        #Combobox
+        self.combo_rect1 = pygame.Rect(200, 500, 200, 28)
         self.combo1 = ComboBox(self.screen, ["Opción 1", "Opción 2", "Opción 3", "Opción 4", "Opción 5"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "Selecciona un método")
-        self.button = pygame.Rect(504, 356, 191, 39)
+        self.button = pygame.Rect(504, 500, 191, 39)
         self.click_button = False
 
         #Imágenes
@@ -58,20 +66,34 @@ class ben10:
             self.screen.fill(self.color)
 
             #Zona de dibujo
-            #-------------------------------------------
+            #SLL
             if(self.main_menu.getSelectedOption() == 0):
-                pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0, 5)
-                self.combo1.draw()
-                self.drawButton("Aceptar", self.gray, self.button, 0, 16, 22, True, self.black, "Consolas")
-                self.clickOnButton()
-                self.mostrarTexto("PARA INICIAR DEBES SELECCIONAR AL MENOS UNA IMAGEN QUE SERÁ LA CABEZA DE LA LISTA", self.black, 24, 100, 52)
-                self.dibujarImagenes(self.acuatico, 235, 95)
-                self.dibujarImagenes(self.diamante, 435, 95)
-                self.dibujarImagenes(self.bestia, 635, 95)
+                if self.cambiarVentana:
+                    self.mostrarTexto("PARA INICIAR DEBES SELECCIONAR AL MENOS UNA IMAGEN QUE SERÁ LA CABEZA DE LA LISTA", self.black, 24, 100, 120)
+                    self.dibujarImagenes(self.acuatico, 240, 170)
+                    self.dibujarImagenes(self.diamante, 440, 170)
+                    self.dibujarImagenes(self.bestia, 640, 170)
+                    self.dibujarImagenes(self.fantasmatico, 330, 370)
+                    self.dibujarImagenes(self.fuego, 540, 370)
+                    self.tocoCabeza()
+                else:
+                    
+                    pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0, 5)
+                    self.combo1.draw()
+                    self.drawButton("Aceptar", self.gray, self.button, 0, 16, 22, True, self.black)
+                    self.clickOnButtonCombo()
             elif(self.main_menu.getSelectedOption() == 1):
                 pygame.draw.rect(self.screen, (250, 10, 20), (0, 40, self.screen.get_width(), self.screen.get_height() - 40))
             self.main_menu.draw()
             pygame.display.flip()
+
+    def tocoCabeza(self):
+        mousecoord= pygame.mouse.get_pos()
+        if pygame.mouse.get_pressed()[0]:
+            if self.rect1.collidepoint(mousecoord):
+                #Añadir cabeza a la lista
+                # self.
+                self.cambiarVentana= False
 
     def mostrarTexto(self, texto, color, dimensiones, x , y):
         superficie= pygame.font.SysFont("Sans Serif", dimensiones)
@@ -85,16 +107,16 @@ class ben10:
         if rect.collidepoint(pygame.mouse.get_pos()):
             rect= pygame.draw.rect(self.screen, self.black, (x, y, 130, 134),2,10)
     
-    def drawButton(self, text, button_color, background_rect, border, border_radius, text_size, text_bold, text_color, text_font):
+    def drawButton(self, text, button_color, background_rect, border, border_radius, text_size, text_bold, text_color):
         pygame.draw.rect(self.screen, button_color, background_rect, border, border_radius)
         font = pygame.font.SysFont("Sans Serif", text_size, text_bold)
         render_text = font.render(text, True, text_color, None)
         self.screen.blit(render_text, (background_rect.x + (background_rect.width - render_text.get_width())/2, background_rect.y + (background_rect.height - render_text.get_height())/2))
 
-    def clickOnButton(self):
+    def clickOnButtonCombo(self):
         if self.button.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] == True and not self.click_button:
-                print(self.combo.getValue())
+                print(self.combo1.getValue())
                 self.click_button = True
         if not pygame.mouse.get_pressed()[0]:
             self.click_button = False
