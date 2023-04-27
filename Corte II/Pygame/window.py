@@ -34,7 +34,7 @@ class ben10:
         self.color= (220, 220, 220) 
 
         #Combobox métodos
-        self.combo_rect1 = pygame.Rect(295, 150, 255, 28)
+        self.combo_rect1 = pygame.Rect(330, 150, 255, 28)
         self.combo1 = ComboBox(self.screen, ["Agregar elemento al inicio", "Agregar elemento al final", "Agregar elemento en una posicion", "Eliminar primer elemento", "Eliminar ultimo elemento", "Eliminar elemento en una posicion", "Eliminar todos los elementos", "Invertir lista", "Cambiar imagen en una posicion", "Lista vacia"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "")
         self.button = pygame.Rect(504, 500, 191, 39)
         self.click_button = False
@@ -42,11 +42,10 @@ class ben10:
         #Posiciones de la lista
         self.posiciones= []
         for i in range (self.inst_sll.length):
-            index= "" + i
-            self.posiciones.append(index)
+            self.posiciones.append(i)
 
         #Combobox posiciones
-        self.combo_rect2= pygame.Rect(755, 150, 100, 28)
+        self.combo_rect2= pygame.Rect(750, 150, 100, 28)
         self.combo2= ComboBox(self.screen, self.posiciones, self.combo_rect2, self.black, "Sans Serif", 22, 5, self.white, self.white, 40, "")
 
         #Imágenes
@@ -92,14 +91,14 @@ class ben10:
                     self.tocoCabeza()
                 else:
                     self.mostrarTexto("Single Linked List", self.black, 30, 20, 80)
-                    self.mostrarTexto("Selecciona un método", self.black, 28, 75, 153)
+                    self.mostrarTexto("Selecciona un método", self.black, 28, 110, 153)
                     self.mostrarTexto("Posición", self.black, 28, 657, 153)
                     self.drawButton("Aceptar", self.gray, self.button, 0, 16, 22, True, self.black)
                     pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0, 5)
                     self.combo1.draw()
                     pygame.draw.rect(self.screen, self.black, self.combo_rect2, 0, 5)
                     self.combo2.draw()
-                    self.clickOnButtonCombo()
+                    self.clickOnButton()
             elif(self.main_menu.getSelectedOption() == 1):
                 pygame.draw.rect(self.screen, (250, 10, 20), (0, 40, self.screen.get_width(), self.screen.get_height() - 40))
             self.main_menu.draw()
@@ -146,7 +145,7 @@ class ben10:
         render_text = font.render(text, True, text_color, None)
         self.screen.blit(render_text, (background_rect.x + (background_rect.width - render_text.get_width())/2, background_rect.y + (background_rect.height - render_text.get_height())/2))
 
-    def clickOnButtonCombo(self):
+    def clickOnButton(self):
         if self.button.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] == True and not self.click_button:
                 print(self.combo1.getValue())
