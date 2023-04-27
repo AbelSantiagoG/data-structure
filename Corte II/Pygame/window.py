@@ -19,8 +19,6 @@ class ben10:
         self.rect1= pygame.Rect(240, 170, 130, 104)
         self.rect2= pygame.Rect(440, 170, 130, 104)
         self.rect3= pygame.Rect(640, 170, 130, 104)
-        self.rect4= pygame.Rect(330, 370, 130, 104)
-        self.rect5= pygame.Rect(540, 370, 130, 104) 
 
         self.screen= pygame.display.set_mode((1000, 700))
         #Menu
@@ -48,28 +46,20 @@ class ben10:
         self.combo_rect2= pygame.Rect(750, 125, 100, 28)
         self.combo2= ComboBox(self.screen, self.posiciones, self.combo_rect2, self.black, "Sans Serif", 22, 5, self.white, self.white, 40, "")
 
-        #Imágenes
-        self.acuatico= pygame.image.load("imágenes/Acuático.png").convert()
+        #Imágenes}
         self.bestia= pygame.image.load("imágenes/Bestia.png").convert()
         self.cuatro_brazos= pygame.image.load("imágenes/Cuatrobrazos.png").convert()
         self.diamante= pygame.image.load("imágenes/Diamante.png").convert()
         self.fantasmatico= pygame.image.load("imágenes/Fantasmático.png").convert()
-        self.fuego= pygame.image.load("imágenes/Fuego.png").convert()
         self.cannonbolt= pygame.image.load("imágenes/Cannonbolt.png").convert()
-        self.materia_gris= pygame.image.load("imágenes/Materia_gris.png").convert()
-        self.ultra_t= pygame.image.load("imágenes/Ultra_t.png").convert()
         self.xlr8= pygame.image.load("imágenes/XLR8.png").convert()
         
         self.xlr8= pygame.transform.scale(self.xlr8, (130, 104))
-        self.acuatico= pygame.transform.scale(self.acuatico, (130, 104))
         self.bestia= pygame.transform.scale(self.bestia, (130, 104))
         self.cuatro_brazos= pygame.transform.scale(self.cuatro_brazos, (130, 104))
         self.diamante= pygame.transform.scale(self.diamante, (130, 104))
         self.fantasmatico= pygame.transform.scale(self.fantasmatico, (130, 104))
-        self.fuego= pygame.transform.scale(self.fuego, (130, 104))
         self.cannonbolt= pygame.transform.scale(self.cannonbolt, (130, 104))
-        self.materia_gris= pygame.transform.scale(self.materia_gris, (130, 104))
-        self.ultra_t= pygame.transform.scale(self.ultra_t, (130, 104))
     
     def mantenerVentana(self):
         while True:
@@ -94,19 +84,13 @@ class ben10:
         mousecoord= pygame.mouse.get_pos()
         if pygame.mouse.get_pressed()[0]:
             if self.rect1.collidepoint(mousecoord):
-                self.inst_sll.create_node_sll_unshift("Acuatico")
+                self.inst_sll.create_node_sll_unshift("Cannonbolt")
                 self.cambiarVentana= False
             if self.rect2.collidepoint(mousecoord):
                 self.inst_sll.create_node_sll_unshift("Diamante")
                 self.cambiarVentana= False
             if self.rect3.collidepoint(mousecoord):
                 self.inst_sll.create_node_sll_unshift("Bestia")
-                self.cambiarVentana= False
-            if self.rect4.collidepoint(mousecoord):
-                self.inst_sll.create_node_sll_unshift("Fantasmatico")
-                self.cambiarVentana= False
-            if self.rect5.collidepoint(mousecoord):
-                self.inst_sll.create_node_sll_unshift("Fuego")
                 self.cambiarVentana= False
     
     #def añadirAlInicio(self):
@@ -118,12 +102,9 @@ class ben10:
         self.mostrarTexto("Single Linked List", self.black, 30, 20, 70)
         self.mostrarTexto("PARA INICIAR DEBES SELECCIONAR AL MENOS UNA IMAGEN QUE SERÁ LA CABEZA DE LA LISTA", self.black, 24, 100, 140)
         #Imágenes
-        self.dibujarImagenes(self.acuatico, 240, 200)
+        self.dibujarImagenes(self.cannonbolt, 240, 200)
         self.dibujarImagenes(self.diamante, 440, 200)
         self.dibujarImagenes(self.bestia, 640, 200)
-        self.dibujarImagenes(self.fantasmatico, 330, 350)
-        self.dibujarImagenes(self.fuego, 540, 350)
-
         self.tocoCabeza()
     
     def dibujarVentana2(self):
@@ -132,16 +113,12 @@ class ben10:
         self.mostrarTexto("Selecciona un método", self.black, 28, 110, 128)
         self.mostrarTexto("Posición", self.black, 28, 657, 128)
         #Imágenes
-        self.dibujarImagenes(self.cannonbolt, 20, 200)
-        self.dibujarImagenes(self.acuatico, 170, 200)
-        self.dibujarImagenes(self.bestia, 320, 200)
-        self.dibujarImagenes(self.cuatro_brazos, 470, 200)
-        self.dibujarImagenes(self.diamante, 620, 200)
-        self.dibujarImagenes(self.materia_gris, 770, 200)
-        self.dibujarImagenes(self.ultra_t, 80, 350)
-        self.dibujarImagenes(self.xlr8, 230, 350)
-        self.dibujarImagenes(self.fuego, 480, 350)
-        self.dibujarImagenes(self.fantasmatico, 630, 350)
+        self.dibujarImagenes(self.cannonbolt, 55, 180)
+        self.dibujarImagenes(self.bestia, 205, 180)
+        self.dibujarImagenes(self.cuatro_brazos, 355, 180)
+        self.dibujarImagenes(self.diamante, 505, 180)
+        self.dibujarImagenes(self.xlr8, 655, 180)
+        self.dibujarImagenes(self.fantasmatico, 805, 180)
 
 
         #Botón
