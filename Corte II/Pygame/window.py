@@ -16,9 +16,9 @@ class ben10:
         self.cambiarVentana= True
 
         #Rectángulos para cabezas
-        self.rect1= pygame.Rect(240, 170, 130, 104)
-        self.rect2= pygame.Rect(440, 170, 130, 104)
-        self.rect3= pygame.Rect(640, 170, 130, 104)
+        self.rect1= pygame.Rect(240, 170, 130, 124)
+        self.rect2= pygame.Rect(440, 170, 130, 124)
+        self.rect3= pygame.Rect(640, 170, 130, 124)
 
         self.screen= pygame.display.set_mode((1000, 700))
         #Menu
@@ -34,7 +34,7 @@ class ben10:
         #Combobox métodos
         self.combo_rect1 = pygame.Rect(330, 125, 255, 28)
         self.combo1 = ComboBox(self.screen, ["Agregar elemento al inicio", "Agregar elemento al final", "Agregar elemento en una posicion", "Eliminar primer elemento", "Eliminar ultimo elemento", "Eliminar elemento en una posicion", "Eliminar todos los elementos", "Invertir lista", "Cambiar imagen en una posicion", "Lista vacia"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "")
-        self.button = pygame.Rect(504, 500, 191, 39)
+        self.button = pygame.Rect(400, 340, 191, 39)
         self.click_button = False
 
         #Posiciones de la lista
@@ -54,12 +54,12 @@ class ben10:
         self.cannonbolt= pygame.image.load("imágenes/Cannonbolt.png").convert()
         self.xlr8= pygame.image.load("imágenes/XLR8.png").convert()
         
-        self.xlr8= pygame.transform.scale(self.xlr8, (130, 104))
-        self.bestia= pygame.transform.scale(self.bestia, (130, 104))
-        self.cuatro_brazos= pygame.transform.scale(self.cuatro_brazos, (130, 104))
-        self.diamante= pygame.transform.scale(self.diamante, (130, 104))
-        self.fantasmatico= pygame.transform.scale(self.fantasmatico, (130, 104))
-        self.cannonbolt= pygame.transform.scale(self.cannonbolt, (130, 104))
+        self.xlr8= pygame.transform.scale(self.xlr8, (130, 124))
+        self.bestia= pygame.transform.scale(self.bestia, (130, 124))
+        self.cuatro_brazos= pygame.transform.scale(self.cuatro_brazos, (130, 124))
+        self.diamante= pygame.transform.scale(self.diamante, (130, 124))
+        self.fantasmatico= pygame.transform.scale(self.fantasmatico, (130, 124))
+        self.cannonbolt= pygame.transform.scale(self.cannonbolt, (130, 124))
     
     def mantenerVentana(self):
         while True:
@@ -67,8 +67,6 @@ class ben10:
                 if event.type == pygame.QUIT:
                     sys.exit()
             self.screen.fill(self.color)
-
-            #Zona de dibujo
             #SLL
             if(self.main_menu.getSelectedOption() == 0):
                 if self.cambiarVentana:
@@ -79,6 +77,10 @@ class ben10:
                 pygame.draw.rect(self.screen, (0, 0 ,0), (0, 40, self.screen.get_width(), self.screen.get_height() - 40))
             self.main_menu.draw()
             pygame.display.flip()
+
+    def presionaBoton(self):
+        if self.click_button:
+            self.metodos(self.combo2.getIndex + 1)
 
     def tocoCabeza(self):
         mousecoord= pygame.mouse.get_pos()
@@ -93,9 +95,71 @@ class ben10:
                 self.inst_sll.create_node_sll_unshift("Bestia")
                 self.cambiarVentana= False
     
-    #def añadirAlInicio(self):
-        #for i in range (self.inst_sll.length):
-            #if 
+    def value(self):
+        cannonbolt= pygame.Rect(60, 180, 130, 124)
+        bestia= pygame.Rect(210, 180, 130, 124)
+        cuatro_brazos= pygame.Rect(360, 180, 130, 124)
+        diamante= pygame.Rect(510, 180, 130, 124)
+        xlr8= pygame.Rect(660, 180, 130, 124)
+        fantasmatico= pygame.Rect(810, 180, 130, 124)
+
+        mousecoord= pygame.mouse.get_pos()
+        if pygame.mouse.get_pressed()[0]:
+            if cannonbolt.collidepoint(mousecoord):
+                return "Cannonbolt"
+            if bestia.collidepoint(mousecoord):
+                return "Bestia"
+            if cuatro_brazos.collidepoint(mousecoord):
+                return "Cuatrobrazos"
+            if diamante.collidepoint(mousecoord):
+                return "Diamante"
+            if xlr8.collidepoint(mousecoord):
+                return "Xlr8"
+            if fantasmatico.collidepoint(mousecoord):
+                return "Fantasmatico"
+
+
+    def metodos(self,index):
+        #if self.click_button
+        if(self.combo1.getIndex == 0):
+            self.inst_sll.create_node_sll_unshift(self.value())
+        elif(self.combo1.getIndex == 1):
+            self.inst_sll.create_node_sll_ends(self.value())
+        elif(self.combo1 == 2):
+            self.inst_sll.create_node_sll_at_determinate_position(self.value(), index)
+        elif(self.combo1 == 3):
+            self.inst_sll.shift_node_sll()
+        elif(self.combo1 == 4):
+            self.inst_sll.delete_node_sll_pop()
+        elif(self.combo1 == 5):
+            self.inst_sll.remove_node(index)
+        elif(self.combo1 == 6):
+            self.inst_sll.delete_all_items()
+        elif(self.combo1 == 7):
+            self.inst_sll.reverse_sll()
+        elif(self.combo1 == 8):
+            self.inst_sll.update_node_value(index, self.value())
+        elif(self.combo1 == 9):
+            self.inst_sll.is_empty()
+
+    def dibujarLista(self):
+        j=10
+        for i in self.inst_sll:
+            if i == "Cannonbolt":
+                self.dibujarImagenes(self.cannonbolt, j, 475)
+            elif i == "Bestia":
+                self.dibujarImagenes(self.bestia, j, 475)
+            elif i == "Diamante":
+                self.dibujarImagenes(self.diamante, j, 475)
+            elif i == "Cuatrobrazos":
+                self.dibujarImagenes(self.cuatro_brazos, j, 475)
+            elif i == "Fantasmatico":
+                self.dibujarImagenes(self.fantasmatico, j, 475)
+            elif i == "Xlr8":
+                self.dibujarImagenes(self.xlr8, j, 475)
+            j+=135
+
+
 
     def dibujarVentana1(self):
         #Texto
@@ -113,16 +177,16 @@ class ben10:
         self.mostrarTexto("Selecciona un método", self.black, 28, 110, 128)
         self.mostrarTexto("Posición", self.black, 28, 657, 128)
         #Imágenes
-        self.dibujarImagenes(self.cannonbolt, 55, 180)
-        self.dibujarImagenes(self.bestia, 205, 180)
-        self.dibujarImagenes(self.cuatro_brazos, 355, 180)
-        self.dibujarImagenes(self.diamante, 505, 180)
-        self.dibujarImagenes(self.xlr8, 655, 180)
-        self.dibujarImagenes(self.fantasmatico, 805, 180)
-
-
+        self.dibujarImagenes(self.cannonbolt, 60, 180)
+        self.dibujarImagenes(self.bestia, 210, 180)
+        self.dibujarImagenes(self.cuatro_brazos, 360, 180)
+        self.dibujarImagenes(self.diamante, 510, 180)
+        self.dibujarImagenes(self.xlr8, 660, 180)
+        self.dibujarImagenes(self.fantasmatico, 810, 180)
         #Botón
         self.drawButton("Aceptar", self.gray, self.button, 0, 16, 22, True, self.black)
+        #Zona de mostrar lista
+        pygame.draw.rect(self.screen, (208, 208, 208), (0, 400, self.screen.get_width(), 150))
         #Combobox
         pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0, 5)
         self.combo1.draw()
@@ -137,11 +201,11 @@ class ben10:
         self.screen.blit(text_surface, (x,y))
 
     def dibujarImagenes(self, img, x, y):
-        rect= pygame.draw.rect(self.screen, self.white, (x,y,130, 104),0,10)
+        rect= pygame.draw.rect(self.screen, self.white, (x,y,130, 124),0,10)
         self.screen.blit(img, (x,y))
-        rect= pygame.draw.rect(self.screen, self.black, (x,y,130, 104),2,10)
+        rect= pygame.draw.rect(self.screen, self.black, (x,y,130, 124),2,10)
         if rect.collidepoint(pygame.mouse.get_pos()):
-            rect= pygame.draw.rect(self.screen, self.black, (x, y, 130, 104),2,10)
+            rect= pygame.draw.rect(self.screen, self.black, (x, y, 130, 124),2,10)
     
     def drawButton(self, text, button_color, background_rect, border, border_radius, text_size, text_bold, text_color):
         pygame.draw.rect(self.screen, button_color, background_rect, border, border_radius)
@@ -152,7 +216,6 @@ class ben10:
     def clickOnButton(self):
         if self.button.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] == True and not self.click_button:
-                print(self.combo1.getValue())
                 self.click_button = True
         if not pygame.mouse.get_pressed()[0]:
             self.click_button = False
