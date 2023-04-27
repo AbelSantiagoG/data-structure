@@ -103,11 +103,11 @@ class SingleLinkedList:
 
     def get_node_value(self, index):
         if index < 1 or index > self.length:
-            print('No se encontro')
+            return 'No se encontro'
         elif index == 1:
-            print(self.head.value)
+            return self.head.value
         elif index == self.length:
-            print(self.tail.value)
+            return self.tail.value
         else:
             current_node = self.head
             node_counter = 1
@@ -115,7 +115,7 @@ class SingleLinkedList:
             while(index != node_counter):
                 current_node = current_node.next
                 node_counter += 1
-            print(current_node.value)
+            return current_node.value
 
     def update_node_value(self, index, new_value):
         search_node = self.get_node(index)
