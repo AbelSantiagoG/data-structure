@@ -15,6 +15,9 @@ class ben10:
 
         self.cambiarVentana= True
 
+        #valor
+        self.value= ""
+
         #Rectángulos para cabezas
         self.rect1= pygame.Rect(240, 170, 130, 124)
         self.rect2= pygame.Rect(440, 170, 130, 124)
@@ -44,9 +47,9 @@ class ben10:
 
         #Combobox posiciones
         self.combo_rect2= pygame.Rect(750, 125, 100, 28)
-        self.combo2= ComboBox(self.screen, self.posiciones, self.combo_rect2, self.black, "Sans Serif", 22, 5, self.white, self.white, 40, "")
+        self.combo2= ComboBox(self.screen, ["1", "2", "3"], self.combo_rect2, self.black, "Sans Serif", 22, 5, self.white, self.white, 40, "")
 
-        #Imágenes}
+        #Imágenes
         self.bestia= pygame.image.load("imágenes/Bestia.png").convert()
         self.cuatro_brazos= pygame.image.load("imágenes/Cuatrobrazos.png").convert()
         self.diamante= pygame.image.load("imágenes/Diamante.png").convert()
@@ -91,8 +94,8 @@ class ben10:
             if self.rect3.collidepoint(mousecoord):
                 self.inst_sll.create_node_sll_unshift("Bestia")
                 self.cambiarVentana= False
-    
-    def value(self):
+
+    def valueNode(self):
         cannonbolt= pygame.Rect(60, 180, 130, 124)
         bestia= pygame.Rect(210, 180, 130, 124)
         cuatro_brazos= pygame.Rect(360, 180, 130, 124)
@@ -103,44 +106,51 @@ class ben10:
         mousecoord= pygame.mouse.get_pos()
         if pygame.mouse.get_pressed()[0]:
             if cannonbolt.collidepoint(mousecoord):
-                return "Cannonbolt"
+                self.value= "Cannonbolt"
             if bestia.collidepoint(mousecoord):
-                return "Bestia"
+                self.value= "Bestia"
             if cuatro_brazos.collidepoint(mousecoord):
-                return "Cuatrobrazos"
+                self.value= "Cuatrobrazos"
             if diamante.collidepoint(mousecoord):
-                return "Diamante"
+                self.value= "Diamante"
             if xlr8.collidepoint(mousecoord):
-                return "Xlr8"
+                self.value= "Xlr8"
             if fantasmatico.collidepoint(mousecoord):
-                return "Fantasmatico"
-        return "1"
-
+                self.value= "Fantasmatico"
 
     def metodos(self):
-        if self.value() != "1":
-            if self.click_button:
-                index= int(self.combo2.getValue())
-                if(self.combo1.getIndex == 0):
-                    self.inst_sll.create_node_sll_unshift(self.value())
-                elif(self.combo1.getIndex == 1):
-                    self.inst_sll.create_node_sll_ends(self.value())
-                elif(self.combo1 == 2):
-                    self.inst_sll.create_node_sll_at_determinate_position(self.value(), index)
-                elif(self.combo1 == 3):
-                    self.inst_sll.shift_node_sll()
-                elif(self.combo1 == 4):
-                    self.inst_sll.delete_node_sll_pop()
-                elif(self.combo1 == 5):
-                    self.inst_sll.remove_node(index)
-                elif(self.combo1 == 6):
-                    self.inst_sll.delete_all_items()
-                elif(self.combo1 == 7):
-                    self.inst_sll.reverse_sll()
-                elif(self.combo1 == 8):
-                    self.inst_sll.update_node_value(index, self.value())
-                elif(self.combo1 == 9):
-                    self.inst_sll.is_empty()
+            print(self.value)
+            index= 1
+            if(self.combo1.getIndex() == 0):
+                print("metodo 1")
+                self.inst_sll.create_node_sll_unshift(self.value)
+            elif(self.combo1.getIndex() == 1):
+                print("Metodo 2")
+                self.inst_sll.create_node_sll_ends(self.value)
+            elif(self.combo1.getIndex() == 2):
+                print("Metodo 3")
+                self.inst_sll.create_node_sll_at_determinate_position(self.value, index)
+            elif(self.combo1.getIndex() == 3):
+                print("Metodo 4")
+                self.inst_sll.shift_node_sll()
+            elif(self.combo1.getIndex() == 4):
+                print("Metodo 5")
+                self.inst_sll.delete_node_sll_pop()
+            elif(self.combo1.getIndex() == 5):
+                print("Metodo 6")
+                self.inst_sll.remove_node(index)
+            elif(self.combo1.getIndex() == 6):
+                print("Metodo 7")
+                self.inst_sll.delete_all_items()
+            elif(self.combo1.getIndex() == 7):
+                print("Metodo 8")
+                self.inst_sll.reverse_sll()
+            elif(self.combo1.getIndex() == 8):
+                print("Metodo 9")
+                self.inst_sll.update_node_value(index, self.value)
+            elif(self.combo1.getIndex() == 9):
+                print("Metodo 10")
+                self.inst_sll.is_empty()
 
     def dibujarLista(self):
         j=10
@@ -193,7 +203,10 @@ class ben10:
         self.combo2.draw()
         
         self.clickOnButton()
+        self.valueNode()
+        #self.metodos()
         self.dibujarLista()
+        
 
     def mostrarTexto(self, texto, color, dimensiones, x , y):
         superficie= pygame.font.SysFont("Sans Serif", dimensiones)
@@ -217,5 +230,6 @@ class ben10:
         if self.button.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] and not self.click_button:
                 self.click_button = True
+                self.metodos()
         if not pygame.mouse.get_pressed()[0]:
             self.click_button = False
