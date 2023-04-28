@@ -37,7 +37,7 @@ class ben10:
 
         #Combobox métodos
         self.combo_rect1 = pygame.Rect(330, 125, 255, 28)
-        self.combo1 = ComboBox(self.screen, ["Agregar elemento al inicio", "Agregar elemento al final", "Agregar elemento en una posicion", "Eliminar primer elemento", "Eliminar ultimo elemento", "Eliminar elemento en una posicion", "Eliminar todos los elementos", "Invertir lista", "Cambiar imagen en una posicion", "Lista vacia"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "Seleccione el metodo")
+        self.combo1 = ComboBox(self.screen, ["Agregar elemento al inicio", "Agregar elemento al final", "Agregar elemento en una posicion", "Eliminar primer elemento", "Eliminar ultimo elemento", "Eliminar elemento en una posicion", "Eliminar todos los elementos", "Invertir lista", "Cambiar imagen en una posicion", "Lista vacia", "Eliminar duplicados"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "Seleccione el metodo")
         self.button = pygame.Rect(145, 345, 191, 39)
         self.click_button = False
 
@@ -138,6 +138,8 @@ class ben10:
                 self.inst_sll.update_node_value(int(self.combo2.getValue()), self.value)
             elif(self.combo1.getIndex() == 9):
                 self.inst_sll.is_empty()
+            elif(self.combo1.getIndex() == 10):
+                self.inst_sll.remove_node_duplicated(self.value)
             data_list = [str(x) for x in range(1, self.inst_sll.length+1)]
             self.combo2.updateOptions(data_list)
 

@@ -69,6 +69,8 @@ class SingleLinkedList:
             self.tail.next = None
             self.length -= 1
 
+
+
     '''Eliminar nodo al inicio de la lista'''
     def shift_node_sll(self):
         if self.length == 0:
@@ -83,20 +85,30 @@ class SingleLinkedList:
             self.head = remove_node.next
             self.length -=1
 
-
-    def get_node(self, index):
+    def get_node_by_index(self, index):
         if index < 1 or index > self.length:
-            return None
+            print("Fuera de rango")
         elif index == 1:
             return self.head
         elif index == self.length:
             return self.tail
         else:
             current_node = self.head
-            node_counter = 1
-            while(index != node_counter):
+            node_counter= 1
+            while(node_counter != index):
+                node_counter+= 1
+                current_node= current_node.next
+            return current_node
+        
+    def get_node_by_value(self, value):
+        if value == self.head.value:
+            return self.head
+        elif value == self.tail.value:
+            return self.tail
+        else:
+            current_node = self.head
+            while(current_node.value != value):
                 current_node = current_node.next
-                node_counter += 1
             return current_node
 
     def get_node_value(self, index):
@@ -115,9 +127,22 @@ class SingleLinkedList:
             return current_node.value
 
     def update_node_value(self, index, new_value):
-        search_node = self.get_node(index)
+        search_node = self.get_node_by_index(index)
         if search_node != None:
             search_node.value = new_value
+
+    def get_previous_node(self, value):
+        if value == self.head.value:
+            return self.head
+        elif value == self.tail.value:
+            return self.tail
+        else:
+            current_node = self.head
+            node= current_node.next
+            while(node.value != value):
+                current_node = current_node.next
+                node= node.next
+            return current_node
 
     def remove_node(self, index):
         if index == 1:
@@ -125,15 +150,54 @@ class SingleLinkedList:
         elif index == self.length:
             self.delete_node_sll_pop()
         else:
-            remove_node_sll = self.get_node(index)
-            if remove_node_sll!= None:
-                previous_node = self.get_node(index - 1)
-                print(self.get_node(index).value)
+            remove_node_sll = self.get_node_by_index(index)
+            if remove_node_sll != None:
+                previous_node = self.get_node_by_index(index - 1)
+                print(self.get_node_by_index(index).value)
                 previous_node.next = remove_node_sll.next
                 remove_node_sll.next = None
                 self.length-=1
             else:
                 print('     >> No se encontro el nodo <<')
+    
+    def has_duplicates(self, value):
+        array_with_nodes_value = list()
+        current_node = self.head 
+        while(current_node != None):
+            array_with_nodes_value.append(current_node.value)
+            current_node = current_node.next
+        cont=0
+        for i in range (1, len(array_with_nodes_value)):
+            if array_with_nodes_value[i] == value:
+                cont+= 1
+        if cont > 1:
+            return True
+        else:
+            return False
+
+    def remove_node_value(self, value):
+        if value == self.head.value:
+            self.shift_node_sll()
+        elif value == self.tail.value:
+            self.delete_node_sll_pop()
+        else:
+            remove_node_sll = self.get_node_by_value(value)
+            if remove_node_sll != None:
+                previous_node = self.get_previous_node(value)
+                previous_node.next = remove_node_sll.next
+                remove_node_sll.next = None
+                self.length-=1
+            else:
+                print('     >> No se encontro el nodo <<')
+
+    def remove_node_duplicated(self, value):
+        has_duplicates= self.has_duplicates(value)
+
+        current_node = self.head 
+        while(current_node != None):
+            if current_node.value == value and has_duplicates == True:
+                self.remove_node_value(value)
+            current_node = current_node.next
 
     def get_list_length(self):
         array_with_nodes_value = list()
@@ -169,7 +233,7 @@ class SingleLinkedList:
 
             current_node = self.tail
             for i in range (1, self.length - 1):
-                node = self.get_node(self.length - i)
+                node = self.get_node_by_index(self.length - i)
                 current_node.next = node
                 current_node = node
             node.next = aux_tail
