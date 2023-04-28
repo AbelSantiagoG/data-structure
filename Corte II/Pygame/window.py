@@ -38,7 +38,7 @@ class ben10:
         #Combobox métodos
         self.combo_rect1 = pygame.Rect(330, 125, 255, 28)
         self.combo1 = ComboBox(self.screen, ["Agregar elemento al inicio", "Agregar elemento al final", "Agregar elemento en una posicion", "Eliminar primer elemento", "Eliminar ultimo elemento", "Eliminar elemento en una posicion", "Eliminar todos los elementos", "Invertir lista", "Cambiar imagen en una posicion", "Lista vacia"], self.combo_rect1, self.black, "Sans serif", 22, 5, self.white, self.white, 40, "")
-        self.button = pygame.Rect(180, 345, 191, 39)
+        self.button = pygame.Rect(145, 345, 191, 39)
         self.click_button = False
 
         #Combobox posiciones
