@@ -1,6 +1,7 @@
 from combbox import ComboBox
 from SLL import SingleLinkedList
 from menu import Menu
+import webbrowser
 import pygame, sys
 
 class ben10:
@@ -69,6 +70,7 @@ class ben10:
             if(self.main_menu.getSelectedOption() == 0):
                 self.mostrarTexto("Single Linked List", self.black, 30, 20, 70)
                 self.dibujarFooter()
+                self.clickEnLogoGit()
                 if self.cambiarVentana:
                     self.dibujarVentana1()
                 else:
@@ -193,20 +195,34 @@ class ben10:
         self.combo2.draw()
         
     def dibujarFooter(self):
-        #logo1= pygame.image.load("imágenes/Logo.png").convert()
-        #logo1= pygame.transform.scale(logo1, (130, 124))
-        #logo2= pygame.image.load("imágenes/logo_github.png").convert()
-        #logo2= pygame.transform.scale(logo2, (130, 124))
+        logo1= pygame.image.load("imágenes/logo_UAM.jpg").convert()
+        logo1= pygame.transform.scale(logo1, (55, 50))
+        logo2= pygame.image.load("imágenes/logo_github.png").convert()
+        logo2= pygame.transform.scale(logo2, (45, 40))
         self.mostrarTexto("Desarrollado por:", self.black, 23, 360, 630)
         self.mostrarTexto("Abel Gomez", self.black, 21, 490, 630)
         self.mostrarTexto("@ | SEM -2023", self.black, 21, 415, 655)
-        #self.dibujarImagenes(logo2, 500, 550)
-        #self.dibujarImagenes(logo1, 840, 570)
+        self.dibujarLogos(logo2, 580, 630, 45, 40)
+        self.dibujarLogos(logo1, 935, 645, 55, 50)
+
+    def clickEnLogoGit(self):
+        mousecoord= pygame.mouse.get_pos()
+        rect= pygame.Rect(580, 630, 45, 40)
+        if pygame.mouse.get_pressed()[0]:
+            if rect.collidepoint(mousecoord):
+                webbrowser.open(r"https://github.com/AbelSantiagoG/data-structure.git")
 
     def mostrarTexto(self, texto, color, dimensiones, x , y):
         superficie= pygame.font.SysFont("Sans Serif", dimensiones)
         text_surface= superficie.render(texto, True, color)
         self.screen.blit(text_surface, (x,y))
+
+    def dibujarLogos(self, img, x, y, w, h):
+        rect= pygame.draw.rect(self.screen, self.white, (x,y,w, h),0,10)
+        self.screen.blit(img, (x,y))
+        rect= pygame.draw.rect(self.screen, self.black, (x,y,w, h),2,10)
+        if rect.collidepoint(pygame.mouse.get_pos()):
+            rect= pygame.draw.rect(self.screen, self.black, (x, y, w, h),2,10)
 
     def dibujarImagenes(self, img, x, y):
         rect= pygame.draw.rect(self.screen, self.white, (x,y,130, 124),0,10)
@@ -228,6 +244,3 @@ class ben10:
                 self.metodos()
         if not pygame.mouse.get_pressed()[0]:
             self.click_button = False
-
-    #import webbrowser
-    #webbrowser.open(r"https://github.com/juanesbrice/ProyectoFinaLTAD%22)
