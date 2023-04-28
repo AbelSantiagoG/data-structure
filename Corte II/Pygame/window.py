@@ -184,7 +184,7 @@ class ben10:
         #Zona de mostrar lista
         pygame.draw.rect(self.screen, (208, 208, 208), (0, 400, self.screen.get_width(), 150))
         #Combobox
-        pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0, 5)
+        pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0,5)
         pygame.draw.rect(self.screen, self.black, self.combo_rect2, 0, 5)
         
         self.clickOnButton()
@@ -225,11 +225,7 @@ class ben10:
             rect= pygame.draw.rect(self.screen, self.black, (x, y, w, h),2,10)
 
     def dibujarImagenes(self, img, x, y):
-        rect= pygame.draw.rect(self.screen, self.white, (x,y,130, 124),0,10)
         self.screen.blit(img, (x,y))
-        rect= pygame.draw.rect(self.screen, self.black, (x,y,130, 124),2,10)
-        if rect.collidepoint(pygame.mouse.get_pos()):
-            rect= pygame.draw.rect(self.screen, self.black, (x, y, 130, 124),2,10)
     
     def drawButton(self, text, button_color, background_rect, border, border_radius, text_size, text_bold, text_color):
         pygame.draw.rect(self.screen, button_color, background_rect, border, border_radius)
