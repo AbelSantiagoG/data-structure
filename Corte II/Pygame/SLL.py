@@ -128,8 +128,10 @@ class SingleLinkedList:
             remove_node_sll = self.get_node(index)
             if remove_node_sll!= None:
                 previous_node = self.get_node(index - 1)
+                print(self.get_node(index).value)
                 previous_node.next = remove_node_sll.next
                 remove_node_sll.next = None
+                self.length-=1
             else:
                 print('     >> No se encontro el nodo <<')
 
