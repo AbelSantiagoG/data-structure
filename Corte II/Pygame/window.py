@@ -40,14 +40,9 @@ class ben10:
         self.button = pygame.Rect(400, 345, 191, 39)
         self.click_button = False
 
-        #Posiciones de la lista
-        self.posiciones= []
-        for i in range (self.inst_sll.length):
-            self.posiciones.append(i)
-
         #Combobox posiciones
         self.combo_rect2= pygame.Rect(750, 125, 100, 28)
-        self.combo2= ComboBox(self.screen, ["1", "2", "3"], self.combo_rect2, self.black, "Sans Serif", 22, 5, self.white, self.white, 40, "")
+        self.combo2= ComboBox(self.screen, ["1"], self.combo_rect2, self.black, "Sans Serif", 22, 5, self.white, self.white, 40, "")
 
         #Imágenes
         self.bestia= pygame.image.load("imágenes/Bestia.png").convert()
@@ -72,6 +67,8 @@ class ben10:
             self.screen.fill(self.color)
             #SLL
             if(self.main_menu.getSelectedOption() == 0):
+                self.mostrarTexto("Single Linked List", self.black, 30, 20, 70)
+                self.dibujarFooter()
                 if self.cambiarVentana:
                     self.dibujarVentana1()
                 else:
@@ -119,60 +116,49 @@ class ben10:
                 self.value= "Fantasmatico"
 
     def metodos(self):
-            print(self.value)
-            index= 1
-            if(self.combo1.getIndex() == 0):
-                print("metodo 1")
+            if(self.combo1.getIndex() == 0 and self.inst_sll.length < 7):
                 self.inst_sll.create_node_sll_unshift(self.value)
-            elif(self.combo1.getIndex() == 1):
-                print("Metodo 2")
+            elif(self.combo1.getIndex() == 1 and self.inst_sll.length < 7):
                 self.inst_sll.create_node_sll_ends(self.value)
-            elif(self.combo1.getIndex() == 2):
-                print("Metodo 3")
-                self.inst_sll.create_node_sll_at_determinate_position(self.value, index)
+            elif(self.combo1.getIndex() == 2 and self.inst_sll.length < 7):
+                self.inst_sll.create_node_sll_at_determinate_position(self.value, int(self.combo2.getValue()))
             elif(self.combo1.getIndex() == 3):
-                print("Metodo 4")
                 self.inst_sll.shift_node_sll()
             elif(self.combo1.getIndex() == 4):
-                print("Metodo 5")
                 self.inst_sll.delete_node_sll_pop()
             elif(self.combo1.getIndex() == 5):
-                print("Metodo 6")
-                self.inst_sll.remove_node(index)
+                self.inst_sll.remove_node(int(self.combo2.getValue()))
             elif(self.combo1.getIndex() == 6):
-                print("Metodo 7")
                 self.inst_sll.delete_all_items()
             elif(self.combo1.getIndex() == 7):
-                print("Metodo 8")
                 self.inst_sll.reverse_sll()
             elif(self.combo1.getIndex() == 8):
-                print("Metodo 9")
-                self.inst_sll.update_node_value(index, self.value)
+                self.inst_sll.update_node_value(int(self.combo2.getValue()), self.value)
             elif(self.combo1.getIndex() == 9):
-                print("Metodo 10")
                 self.inst_sll.is_empty()
+            data_list = [str(x) for x in range(1, self.inst_sll.length+1)]
+            self.combo2.updateOptions(data_list)
 
     def dibujarLista(self):
         j=10
         for i in range (1,self.inst_sll.length+1):
-            if self.inst_sll.get_node_value(i) == "Cannonbolt":
-                self.dibujarImagenes(self.cannonbolt, j, 415)
-            elif self.inst_sll.get_node_value(i) == "Bestia":
-                self.dibujarImagenes(self.bestia, j, 415)
-            elif self.inst_sll.get_node_value(i) == "Diamante":
-                self.dibujarImagenes(self.diamante, j, 415)
-            elif self.inst_sll.get_node_value(i) == "Cuatrobrazos":
-                self.dibujarImagenes(self.cuatro_brazos, j, 415)
-            elif self.inst_sll.get_node_value(i) == "Fantasmatico":
-                self.dibujarImagenes(self.fantasmatico, j, 415)
-            elif self.inst_sll.get_node_value(i) == "Xlr8":
-                self.dibujarImagenes(self.xlr8, j, 415)
-            j+=135
+                if self.inst_sll.get_node_value(i) == "Cannonbolt":
+                    self.dibujarImagenes(self.cannonbolt, j, 415)
+                elif self.inst_sll.get_node_value(i) == "Bestia":
+                    self.dibujarImagenes(self.bestia, j, 415)
+                elif self.inst_sll.get_node_value(i) == "Diamante":
+                    self.dibujarImagenes(self.diamante, j, 415)
+                elif self.inst_sll.get_node_value(i) == "Cuatrobrazos":
+                    self.dibujarImagenes(self.cuatro_brazos, j, 415)
+                elif self.inst_sll.get_node_value(i) == "Fantasmatico":
+                    self.dibujarImagenes(self.fantasmatico, j, 415)
+                elif self.inst_sll.get_node_value(i) == "Xlr8":
+                    self.dibujarImagenes(self.xlr8, j, 415)
+                j+=135
             
 
     def dibujarVentana1(self):
         #Texto
-        self.mostrarTexto("Single Linked List", self.black, 30, 20, 70)
         self.mostrarTexto("PARA INICIAR DEBES SELECCIONAR AL MENOS UNA IMAGEN QUE SERÁ LA CABEZA DE LA LISTA", self.black, 24, 100, 140)
         #Imágenes
         self.dibujarImagenes(self.cannonbolt, 240, 200)
@@ -182,7 +168,6 @@ class ben10:
     
     def dibujarVentana2(self):
         #Texto
-        self.mostrarTexto("Single Linked List", self.black, 30, 20, 70)
         self.mostrarTexto("Selecciona un método", self.black, 28, 110, 128)
         self.mostrarTexto("Posición", self.black, 28, 657, 128)
         #Imágenes
@@ -198,15 +183,25 @@ class ben10:
         pygame.draw.rect(self.screen, (208, 208, 208), (0, 400, self.screen.get_width(), 150))
         #Combobox
         pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0, 5)
-        self.combo1.draw()
         pygame.draw.rect(self.screen, self.black, self.combo_rect2, 0, 5)
-        self.combo2.draw()
         
         self.clickOnButton()
         self.valueNode()
         #self.metodos()
         self.dibujarLista()
+        self.combo1.draw()
+        self.combo2.draw()
         
+    def dibujarFooter(self):
+        #logo1= pygame.image.load("imágenes/Logo.png").convert()
+        #logo1= pygame.transform.scale(logo1, (130, 124))
+        #logo2= pygame.image.load("imágenes/logo_github.png").convert()
+        #logo2= pygame.transform.scale(logo2, (130, 124))
+        self.mostrarTexto("Desarrollado por:", self.black, 23, 360, 630)
+        self.mostrarTexto("Abel Gomez", self.black, 21, 490, 630)
+        self.mostrarTexto("@ | SEM -2023", self.black, 21, 415, 655)
+        #self.dibujarImagenes(logo2, 500, 550)
+        #self.dibujarImagenes(logo1, 840, 570)
 
     def mostrarTexto(self, texto, color, dimensiones, x , y):
         superficie= pygame.font.SysFont("Sans Serif", dimensiones)
@@ -233,3 +228,6 @@ class ben10:
                 self.metodos()
         if not pygame.mouse.get_pressed()[0]:
             self.click_button = False
+
+    #import webbrowser
+    #webbrowser.open(r"https://github.com/juanesbrice/ProyectoFinaLTAD%22)

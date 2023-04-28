@@ -45,7 +45,6 @@ class SingleLinkedList:
         if self.head == None:
             self.head = new_node
             self.tail = new_node
-            print(self.head.value)
         else:
             new_node.next = self.head
             self.head = new_node
@@ -81,7 +80,6 @@ class SingleLinkedList:
             self.length -= 1
         else:
             remove_node = self.head
-            print(f'Valor del nodo a eliminar es: {remove_node.value}')
             self.head = remove_node.next
             self.length -=1
 
@@ -104,14 +102,13 @@ class SingleLinkedList:
     def get_node_value(self, index):
         if index < 1 or index > self.length:
             return 'No se encontro'
-        elif index == 1:
+        elif index == 1 :
             return self.head.value
         elif index == self.length:
             return self.tail.value
         else:
             current_node = self.head
             node_counter = 1
-            #Validar que el nodo a consultar sea el mismo del contador
             while(index != node_counter):
                 current_node = current_node.next
                 node_counter += 1
@@ -120,10 +117,7 @@ class SingleLinkedList:
     def update_node_value(self, index, new_value):
         search_node = self.get_node(index)
         if search_node != None:
-            print(f'Actualizando el valor del nodo ...\n           >> {search_node.value} << a\n           >>{new_value}<<')
             search_node.value = new_value
-        else:
-            print("     >> No se encontro el nodo <<") 
 
     def remove_node(self, index):
         if index == 1:
@@ -134,7 +128,6 @@ class SingleLinkedList:
             remove_node_sll = self.get_node(index)
             if remove_node_sll!= None:
                 previous_node = self.get_node(index - 1)
-                print(self.get_node(index).value)
                 previous_node.next = remove_node_sll.next
                 remove_node_sll.next = None
             else:
@@ -162,23 +155,30 @@ class SingleLinkedList:
             print(node_counter)
 
     def reverse_sll(self):
-        previous_node = None
-        current_node = self.head
-        next= None
-        while (current_node != None):
-            next = current_node.next
-            current_node.next = previous_node
-            previous_node = current_node
-            current_node = next
-        self.head= previous_node
-        return self.head
+        if self.length > 1:
+            aux_head = self.tail
+            aux_tail = self.head
+            if self.length == 2:
+                self.head = aux_head
+                self.head.next = aux_tail
+                self.tail = aux_tail
+                self.tail.next = None
+                return
+
+            current_node = self.tail
+            for i in range (1, self.length - 1):
+                node = self.get_node(self.length - i)
+                current_node.next = node
+                current_node = node
+            node.next = aux_tail
+            self.head = aux_head
+            self.tail = aux_tail
+            self.tail.next=None
 
     def delete_all_items(self):
-        current_node= self.head
-        while(current_node != None):
-            self.head.next=None
-            self.head = None
-            current_node= current_node.next
+        self.head=None
+        self.tail=None
+        self.length=0
 
     def sort_elements_sll(self):
         array_with_nodes_value = list()
