@@ -4,7 +4,7 @@ from menu import Menu
 import webbrowser
 import pygame, sys
 
-class ben10:
+class challenge:
     def __init__(self):
         #Colores
         self.black= (0, 0, 0)
@@ -14,9 +14,10 @@ class ben10:
         self.blue= (0, 0, 255)
         self.gray= (155, 155, 155)
 
+        #Cambiar ventana cuando se selecciona una cabeza
         self.cambiarVentana= True
 
-        #valor
+        #valor seleccionado
         self.value= ""
 
         #Rectángulos para cabezas
@@ -45,7 +46,7 @@ class ben10:
         self.combo_rect2= pygame.Rect(750, 125, 100, 28)
         self.combo2= ComboBox(self.screen, ["1"], self.combo_rect2, self.black, "Sans Serif", 22, 5, self.white, self.white, 40, "¨Posiciones")
 
-        #Imágenes
+        #Imágenes SLL
         self.bestia= pygame.image.load("imágenes/Bestia.png").convert()
         self.cuatro_brazos= pygame.image.load("imágenes/Cuatrobrazos.png").convert()
         self.diamante= pygame.image.load("imágenes/Diamante.png").convert()
@@ -59,8 +60,31 @@ class ben10:
         self.diamante= pygame.transform.scale(self.diamante, (130, 124))
         self.fantasmatico= pygame.transform.scale(self.fantasmatico, (130, 124))
         self.cannonbolt= pygame.transform.scale(self.cannonbolt, (130, 124))
-    
-    def mantenerVentana(self):
+
+        #Imágenes pilas y colas
+            #Fondo
+        self.fondo= pygame.image.load("Imágenes 2/blackjack-classic-background.jpg").convert()
+        self.crupier= pygame.image.load("Imágenes 2/CRUPIER-removebg-preview (1).png").convert()
+
+        self.fondo= pygame.transform.scale(self.fondo, (1000, 630))
+            #Cartas
+        self.carta_2= pygame.image.load("Imágenes 2/2V2.jpg").convert()
+        self.carta_3= pygame.image.load("Imágenes 2/3V2.jpg").convert()
+        self.carta_4= pygame.image.load("Imágenes 2/4V2.jpg").convert()
+        self.carta_5= pygame.image.load("Imágenes 2/5.jpg").convert()
+        self.carta_6= pygame.image.load("Imágenes 2/6.jpg").convert()
+        self.carta_7= pygame.image.load("Imágenes 2/7V2.jpg").convert()
+        self.carta_8= pygame.image.load("Imágenes 2/8.jpg").convert()
+        self.carta_9= pygame.image.load("Imágenes 2/9.jpg").convert()
+        self.carta_10= pygame.image.load("Imágenes 2/10.jpg").convert()
+        self.carta_J= pygame.image.load("Imágenes 2/J2.jpg").convert()
+        self.carta_K= pygame.image.load("Imágenes 2/K3.jpg").convert()
+        self.carta_Q= pygame.image.load("Imágenes 2/Q2.jpg").convert()
+
+
+#Funcion principal
+
+    def Run(self):
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -77,9 +101,15 @@ class ben10:
                     self.dibujarVentana2()
             elif(self.main_menu.getSelectedOption() == 1):
                 pygame.draw.rect(self.screen, (0, 0 ,0), (0, 40, self.screen.get_width(), self.screen.get_height() - 40))
+            elif(self.main_menu.getSelectedOption() == 2):
+                self.dibujarVentanaBlackJack()
+                self.dibujarFooter()
+                self.clickEnLogoGit()
             self.main_menu.draw()
             pygame.display.flip()
 
+#SLL (reto 1)
+#-------------------------------------------------------------------------------------------------------------------------------------------
 
     def tocoCabeza(self):
         mousecoord= pygame.mouse.get_pos()
@@ -189,7 +219,7 @@ class ben10:
         pygame.draw.rect(self.screen, self.black, self.combo_rect1, 0,5)
         pygame.draw.rect(self.screen, self.black, self.combo_rect2, 0, 5)
         
-        self.clickOnButton()
+        self.clickOnButtonAccept()
         self.valueNode()
         #self.metodos()
         self.dibujarLista()
@@ -201,11 +231,11 @@ class ben10:
         logo1= pygame.transform.scale(logo1, (55, 50))
         logo2= pygame.image.load("imágenes/logo_github.png").convert()
         logo2= pygame.transform.scale(logo2, (45, 40))
-        self.mostrarTexto("Desarrollado por:", self.black, 23, 360, 630)
-        self.mostrarTexto("Abel Gomez", self.black, 21, 490, 630)
-        self.mostrarTexto("@ | SEM -2023", self.black, 21, 415, 655)
-        self.dibujarLogos(logo2, 580, 630, 45, 40)
-        self.dibujarLogos(logo1, 935, 645, 55, 50)
+        self.mostrarTexto("Desarrollado por:", self.black, 23, 360, 650)
+        self.mostrarTexto("Abel Gomez", self.black, 21, 490, 650)
+        self.mostrarTexto("@ | SEM -2023", self.black, 21, 415, 675)
+        self.dibujarImagenes(logo2, 580, 650)
+        self.dibujarImagenes(logo1, 935, 650)
 
     def clickEnLogoGit(self):
         mousecoord= pygame.mouse.get_pos()
@@ -219,13 +249,6 @@ class ben10:
         text_surface= superficie.render(texto, True, color)
         self.screen.blit(text_surface, (x,y))
 
-    def dibujarLogos(self, img, x, y, w, h):
-        rect= pygame.draw.rect(self.screen, self.white, (x,y,w, h),0,10)
-        self.screen.blit(img, (x,y))
-        rect= pygame.draw.rect(self.screen, self.black, (x,y,w, h),2,10)
-        if rect.collidepoint(pygame.mouse.get_pos()):
-            rect= pygame.draw.rect(self.screen, self.black, (x, y, w, h),2,10)
-
     def dibujarImagenes(self, img, x, y):
         self.screen.blit(img, (x,y))
     
@@ -235,10 +258,24 @@ class ben10:
         render_text = font.render(text, True, text_color, None)
         self.screen.blit(render_text, (background_rect.x + (background_rect.width - render_text.get_width())/2, background_rect.y + (background_rect.height - render_text.get_height())/2))
 
-    def clickOnButton(self):
+    def clickOnButtonAccept(self):
         if self.button.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] and not self.click_button:
                 self.click_button = True
                 self.metodos()
         if not pygame.mouse.get_pressed()[0]:
             self.click_button = False
+
+#-------------------------------------------------------------------------------------------------------------------------------------------
+
+#Empieza pilas (reto 2)
+#-------------------------------------------------------------------------------------------------------------------------------------------
+    
+    def dibujarVentanaBlackJack(self):
+        #Imágenes
+        self.dibujarImagenes(self.fondo,0,0)
+
+        #Texto
+        
+
+

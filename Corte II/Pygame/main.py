@@ -1,5 +1,5 @@
-from window import ben10
+from window import challenge
 
-inst_controller= ben10()
+inst_controller= challenge()
 
-inst_controller.mantenerVentana()
+inst_controller.Run()
