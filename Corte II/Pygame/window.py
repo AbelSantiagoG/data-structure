@@ -3,6 +3,8 @@ from SLL import SingleLinkedList
 from menu import Menu
 import webbrowser
 import pygame, sys
+import random
+from jugador import jugador
 
 class challenge:
     def __init__(self):
@@ -13,6 +15,7 @@ class challenge:
         self.red= (255, 0, 0)
         self.blue= (0, 0, 255)
         self.gray= (155, 155, 155)
+        self.brown= (113, 63, 16)
 
         #Cambiar ventana cuando se selecciona una cabeza
         self.cambiarVentana= True
@@ -27,7 +30,7 @@ class challenge:
 
         self.screen= pygame.display.set_mode((1000, 700))
         #Menu
-        self.main_menu = Menu(self.screen, {"SLL": "imágenes/list-outline.png", "DLL": "imágenes/list-outline.png", "Pilas y colas": "imágenes/list-outline.png", "Árboles": "imágenes/tree-solid.png", "Grafos": "imágenes/circle-nodes-solid.png"}, self.green, 40, "Sans Serif", 22, self.black)
+        self.main_menu = Menu(self.screen, {"SLL": "imágenes/list-outline.png", "DLL": "imágenes/list-outline.png", "Pilas y colas": "imágenes/list-outline.png", "Árboles": "imágenes/tree-solid.png", "Grafos": "imágenes/circle-nodes-solid.png"}, self.white, 40, "Sans Serif", 22, self.black)
         
         #Instancia de sll
         self.inst_sll= SingleLinkedList()
@@ -47,12 +50,12 @@ class challenge:
         self.combo2= ComboBox(self.screen, ["1"], self.combo_rect2, self.black, "Sans Serif", 22, 5, self.white, self.white, 40, "¨Posiciones")
 
         #Imágenes SLL
-        self.bestia= pygame.image.load("imágenes/Bestia.png").convert()
-        self.cuatro_brazos= pygame.image.load("imágenes/Cuatrobrazos.png").convert()
-        self.diamante= pygame.image.load("imágenes/Diamante.png").convert()
-        self.fantasmatico= pygame.image.load("imágenes/Fantasmático.png").convert()
-        self.cannonbolt= pygame.image.load("imágenes/Cannonbolt.png").convert()
-        self.xlr8= pygame.image.load("imágenes/XLR8.png").convert()
+        self.bestia= pygame.image.load("imágenes/Bestia.png")
+        self.cuatro_brazos= pygame.image.load("imágenes/Cuatrobrazos.png")
+        self.diamante= pygame.image.load("imágenes/Diamante.png")
+        self.fantasmatico= pygame.image.load("imágenes/Fantasmático.png")
+        self.cannonbolt= pygame.image.load("imágenes/Cannonbolt.png")
+        self.xlr8= pygame.image.load("imágenes/XLR8.png")
         
         self.xlr8= pygame.transform.scale(self.xlr8, (130, 124))
         self.bestia= pygame.transform.scale(self.bestia, (130, 124))
@@ -61,26 +64,59 @@ class challenge:
         self.fantasmatico= pygame.transform.scale(self.fantasmatico, (130, 124))
         self.cannonbolt= pygame.transform.scale(self.cannonbolt, (130, 124))
 
+#Pilas y colas
         #Imágenes pilas y colas
             #Fondo
-        self.fondo= pygame.image.load("Imágenes 2/blackjack-classic-background.jpg").convert()
-        self.crupier= pygame.image.load("Imágenes 2/CRUPIER-removebg-preview (1).png").convert()
+        self.fondo= pygame.image.load("Imágenes 2/blackjack-classic-background.jpg")
+        self.crupier_img= pygame.image.load("Imágenes 2/CRUPIER-removebg-preview(1).png")
 
         self.fondo= pygame.transform.scale(self.fondo, (1000, 630))
+        self.crupier_img= pygame.transform.scale(self.crupier_img, (300, 200))
             #Cartas
-        self.carta_2= pygame.image.load("Imágenes 2/2V2.jpg").convert()
-        self.carta_3= pygame.image.load("Imágenes 2/3V2.jpg").convert()
-        self.carta_4= pygame.image.load("Imágenes 2/4V2.jpg").convert()
-        self.carta_5= pygame.image.load("Imágenes 2/5.jpg").convert()
-        self.carta_6= pygame.image.load("Imágenes 2/6.jpg").convert()
-        self.carta_7= pygame.image.load("Imágenes 2/7V2.jpg").convert()
-        self.carta_8= pygame.image.load("Imágenes 2/8.jpg").convert()
-        self.carta_9= pygame.image.load("Imágenes 2/9.jpg").convert()
-        self.carta_10= pygame.image.load("Imágenes 2/10.jpg").convert()
-        self.carta_J= pygame.image.load("Imágenes 2/J2.jpg").convert()
-        self.carta_K= pygame.image.load("Imágenes 2/K3.jpg").convert()
-        self.carta_Q= pygame.image.load("Imágenes 2/Q2.jpg").convert()
+        self.carta_2= pygame.image.load("Imágenes 2/2V2.jpg")
+        self.carta_3= pygame.image.load("Imágenes 2/3V2.jpg")
+        self.carta_4= pygame.image.load("Imágenes 2/4V2.jpg")
+        self.carta_5= pygame.image.load("Imágenes 2/5.jpg")
+        self.carta_6= pygame.image.load("Imágenes 2/6.jpg")
+        self.carta_7= pygame.image.load("Imágenes 2/7V2.jpg")
+        self.carta_8= pygame.image.load("Imágenes 2/8.jpg")
+        self.carta_9= pygame.image.load("Imágenes 2/9.jpg")
+        self.carta_10= pygame.image.load("Imágenes 2/10.jpg")
+        self.carta_J= pygame.image.load("Imágenes 2/J2.jpg")
+        self.carta_K= pygame.image.load("Imágenes 2/K3.jpg")
+        self.carta_Q= pygame.image.load("Imágenes 2/Q2.jpg")
 
+        #Botones
+        self.button_start= pygame.Rect(404, 85, 110, 27)
+        self.button_plantarme_jugador_1= pygame.Rect(170, 305, 110, 33)
+        self.button_plantarme_jugador_2= pygame.Rect(495, 445, 110, 33)
+        self.button_plantarme_jugador_3= pygame.Rect(810, 305, 110, 33)
+        self.button_pedir_cartas= pygame.Rect(460, 270, 135, 33)
+
+        self.click_button_start = False
+        self.click_button_plantarme_jugador_1= False
+        self.click_button_plantarme_jugador_2= False
+        self.click_button_plantarme_jugador_3= False
+
+        #Barajas
+        self.baraja_total= list()
+        self.baraja_crupier= list()
+        self.baraja_jugador_1= list()
+        self.baraja_jugador_2= list()
+        self.baraja_jugador_3= list()
+
+        #Jugadores
+        self.jugador_1= jugador(40, 250, self.baraja_jugador_1)
+        self.jugador_2= jugador(350, 300, self.baraja_jugador_2)
+        self.jugador_3= jugador(660, 250, self.baraja_jugador_3)
+        self.crupier= jugador(500, 250, self.baraja_crupier)
+
+        #Lista de jugadores
+        self.lista_jugadores= list()
+        self.lista_jugadores.append(self.jugador_1)
+        self.lista_jugadores.append(self.jugador_2)
+        self.lista_jugadores.append(self.jugador_3)
+        self.lista_jugadores.append(self.crupier)
 
 #Funcion principal
 
@@ -92,8 +128,8 @@ class challenge:
             self.screen.fill(self.color)
             #SLL
             if(self.main_menu.getSelectedOption() == 0):
-                self.mostrarTexto("Single Linked List", self.black, 30, 20, 70)
-                self.dibujarFooter()
+                self.mostrarTexto("Single Linked List", self.black, 30, 20, 70, "Sans Serif")
+                self.dibujarFooter((220, 220, 220))
                 self.clickEnLogoGit()
                 if self.cambiarVentana:
                     self.dibujarVentana1()
@@ -102,8 +138,9 @@ class challenge:
             elif(self.main_menu.getSelectedOption() == 1):
                 pygame.draw.rect(self.screen, (0, 0 ,0), (0, 40, self.screen.get_width(), self.screen.get_height() - 40))
             elif(self.main_menu.getSelectedOption() == 2):
+                self.dibujarFooter(self.white)
                 self.dibujarVentanaBlackJack()
-                self.dibujarFooter()
+                self.iniciar()
                 self.clickEnLogoGit()
             self.main_menu.draw()
             pygame.display.flip()
@@ -193,7 +230,7 @@ class challenge:
 
     def dibujarVentana1(self):
         #Texto
-        self.mostrarTexto("PARA INICIAR DEBES SELECCIONAR AL MENOS UNA IMAGEN QUE SERÁ LA CABEZA DE LA LISTA", self.black, 24, 100, 140)
+        self.mostrarTexto("PARA INICIAR DEBES SELECCIONAR AL MENOS UNA IMAGEN QUE SERÁ LA CABEZA DE LA LISTA", self.black, 24, 100, 140, "Sans Serif")
         #Imágenes
         self.dibujarImagenes(self.cannonbolt, 240, 200)
         self.dibujarImagenes(self.diamante, 440, 200)
@@ -202,8 +239,8 @@ class challenge:
     
     def dibujarVentana2(self):
         #Texto
-        self.mostrarTexto("Selecciona un método", self.black, 28, 110, 128)
-        self.mostrarTexto("Posición", self.black, 28, 657, 128)
+        self.mostrarTexto("Selecciona un método", self.black, 28, 110, 128, "Sans Serif")
+        self.mostrarTexto("Posición", self.black, 28, 657, 128, "Sans Serif")
         #Imágenes
         self.dibujarImagenes(self.cannonbolt, 60, 180)
         self.dibujarImagenes(self.bestia, 210, 180)
@@ -226,14 +263,15 @@ class challenge:
         self.combo1.draw()
         self.combo2.draw()
         
-    def dibujarFooter(self):
-        logo1= pygame.image.load("imágenes/logo_UAM.jpg").convert()
+    def dibujarFooter(self, color):
+        pygame.draw.rect(self.screen, color, (0, 630, self.screen.get_width(), 80))
+        logo1= pygame.image.load("imágenes/logo_uam.jpg")
         logo1= pygame.transform.scale(logo1, (55, 50))
-        logo2= pygame.image.load("imágenes/logo_github.png").convert()
+        logo2= pygame.image.load("imágenes/logo_github.png")
         logo2= pygame.transform.scale(logo2, (45, 40))
-        self.mostrarTexto("Desarrollado por:", self.black, 23, 360, 650)
-        self.mostrarTexto("Abel Gomez", self.black, 21, 490, 650)
-        self.mostrarTexto("@ | SEM -2023", self.black, 21, 415, 675)
+        self.mostrarTexto("Desarrollado por:", self.black, 23, 360, 650, "Sans Serif")
+        self.mostrarTexto("Abel Gomez", self.black, 21, 490, 650, "Sans Serif")
+        self.mostrarTexto("@ | SEM -2023", self.black, 21, 415, 675, "Sans Serif")
         self.dibujarImagenes(logo2, 580, 650)
         self.dibujarImagenes(logo1, 935, 650)
 
@@ -244,8 +282,8 @@ class challenge:
             if rect.collidepoint(mousecoord):
                 webbrowser.open(r"https://github.com/AbelSantiagoG/data-structure.git")
 
-    def mostrarTexto(self, texto, color, dimensiones, x , y):
-        superficie= pygame.font.SysFont("Sans Serif", dimensiones)
+    def mostrarTexto(self, texto, color, dimensiones, x , y, fuente):
+        superficie= pygame.font.SysFont(fuente, dimensiones)
         text_surface= superficie.render(texto, True, color)
         self.screen.blit(text_surface, (x,y))
 
@@ -272,10 +310,70 @@ class challenge:
 #-------------------------------------------------------------------------------------------------------------------------------------------
     
     def dibujarVentanaBlackJack(self):
-        #Imágenes
-        self.dibujarImagenes(self.fondo,0,0)
+        self.dibujarImagenes(self.fondo, 0, 0)
+        self.drawButton("START", self.brown, self.button_start, 0, 10, 18, True, self.black)
+        self.drawButton("PLANTARME", self.brown, self.button_plantarme_jugador_1, 0, 10, 18, True, self.black)
+        self.drawButton("PLANTARME", self.brown, self.button_plantarme_jugador_2, 0, 10, 18, True, self.black)
+        self.drawButton("PLANTARME", self.brown, self.button_plantarme_jugador_3, 0, 10, 18, True, self.black)
+        self.drawButton("PEDIR CARTAS", self.brown, self.button_pedir_cartas, 0, 10, 18, True, self.black)
+        self.dibujarImagenes(self.crupier_img, 350, 115)
+        self.mostrarTexto("Para iniciar el juego debes dar click en el botón START", self.white, 18, 45, 85, "Arial")
+        self.mostrarTexto("JUGADOR 1", self.white, 18, 84, 310, "Arial")
+        self.mostrarTexto("JUGADOR 2", self.white, 18, 407, 449, "Arial")
+        self.mostrarTexto("JUGADOR 2", self.white, 18, 720, 310, "Arial")
+        self.iniciar()
+        self.dibujarCartas()
 
-        #Texto
-        
-
-
+    def iniciar(self):
+        if self.button_start.collidepoint(pygame.mouse.get_pos()):
+            if pygame.mouse.get_pressed()[0] and not self.click_button_start:
+                self.click_button_start = True
+                self.llenarBarajaTotal()
+                self.repartirCartas()
+        if not pygame.mouse.get_pressed()[0]:
+            self.click_button_start = False
+    
+    def llenarBarajaTotal(self):
+        while len(self.baraja_total) < 52:
+            numeros = list(range(1, 14))
+            random.shuffle(numeros)
+            for i in numeros:
+                if self.baraja_total.count(i) < 4:
+                    self.baraja_total.append(i)
+    
+    def repartirCartas(self):
+        for i in range(2):
+            self.jugador_1.list.append(self.baraja_total.pop())
+            self.jugador_2.list.append(self.baraja_total.pop())
+            self.jugador_3.list.append(self.baraja_total.pop())
+            self.baraja_crupier.append(self.baraja_total.pop())
+    
+    def dibujarCartas(self):
+        for i in self.lista_jugadores:
+            for j in i.list:
+                #if j == "1":
+                    #self.dibujarImagenes(self.carta_2, i.x, i.y)
+                if j == "2":
+                    self.dibujarImagenes(self.carta_2, i.x, i.y)
+                if j == "3":
+                    self.dibujarImagenes(self.carta_3, i.x, i.y)
+                if j == "4":
+                    self.dibujarImagenes(self.carta_4, i.x, i.y)
+                if j == "5":
+                    self.dibujarImagenes(self.carta_5, i.x, i.y)
+                if j == "6":
+                    self.dibujarImagenes(self.carta_6, i.x, i.y)
+                if j == "7":
+                    self.dibujarImagenes(self.carta_7, i.x, i.y)
+                if j == "8":
+                    self.dibujarImagenes(self.carta_8, i.x, i.y)
+                if j == "9":
+                    self.dibujarImagenes(self.carta_9, i.x, i.y)
+                if j == "10":
+                    self.dibujarImagenes(self.carta_10, i.x, i.y)
+                if j == "11":
+                    self.dibujarImagenes(self.carta_J, i.x, i.y)
+                if j == "12":
+                    self.dibujarImagenes(self.carta_Q, i.x, i.y)
+                if j == "13":
+                    self.dibujarImagenes(self.carta_K, i.x, i.y)
