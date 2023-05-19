@@ -8,6 +8,7 @@ class crupier:
         self.lose= False
         self.xlose= x_lose
         self.ylose= y_lose
+        self.plantarse= False
 
         self.carta_2= pygame.image.load("Imágenes 2/2V2.jpg")
         self.carta_3= pygame.image.load("Imágenes 2/3V2.jpg")

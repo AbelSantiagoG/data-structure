@@ -133,7 +133,6 @@ class challenge:
         self.lista_jugadores.append(self.jugador_1)
         self.lista_jugadores.append(self.jugador_2)
         self.lista_jugadores.append(self.jugador_3)
-        self.lista_jugadores.append(self.crupier)
 
         self.turno= 1
 
@@ -159,7 +158,6 @@ class challenge:
             elif(self.main_menu.getSelectedOption() == 2):
                 self.dibujarFooter(self.white)
                 self.dibujarVentanaBlackJack()
-                self.iniciar()
                 self.clickEnLogoGit()
             self.main_menu.draw()
             pygame.display.flip()
@@ -340,20 +338,17 @@ class challenge:
         self.mostrarTexto("JUGADOR 1", self.white, 18, 84, 310, "Arial")
         self.mostrarTexto("JUGADOR 2", self.white, 18, 407, 449, "Arial")
         self.mostrarTexto("JUGADOR 2", self.white, 18, 720, 310, "Arial")
+        self.llenarBarajaTotal()
         self.iniciar()
         self.dibujarCartas()
-        self.jugadorPierde()
         self.juego()
-        self.darCarta()
 
 
     def iniciar(self):
         if self.button_start.collidepoint(pygame.mouse.get_pos()):
             if pygame.mouse.get_pressed()[0] and not self.click_button_start:
                 self.click_button_start = True
-                self.llenarBarajaTotal()
                 self.repartirCartas()
-                self.dibujarCartas()
                 print(self.jugador_1.list)
                 print(self.jugador_2.list)
                 print(self.jugador_3.list)
@@ -378,7 +373,16 @@ class challenge:
                     else:
                         self.baraja_total.append(str(i))
             
+    
 
+    def jugadorPierde(self):
+        for i in self.lista_jugadores:
+            if i.score > 21:
+                i.lose = True
+                self.mostrarTexto('Está fuera', self.white, 20,i.x_lose, i.y_lose, "Arial")
+    
+    
+        
     def repartirCartas(self):
         for i in range(2):
             self.jugador_1.añadirCartas(self.baraja_total.pop())
@@ -390,61 +394,54 @@ class challenge:
         for i in self.lista_jugadores:
             i.dibujarLista(self.screen)
     
-    def jugadorPierde(self):
-        for i in self.lista_jugadores:
-            if i.puntaje > 21:
-                i.lose = True
-    
     def juego(self):
         if self.turno == 1:
             if pygame.mouse.get_pressed()[0]:
-                if self.button_pedir_cartas(pygame.mouse.get_pos()) and not self.jugador_1.lose:
-                    self.jugador_1.addCard(self.baraja_total.pop())
-                    if self.jugador_1 > 21:
+                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and not self.jugador_1.lose:
+                    self.jugador_1.añadirCartas(self.baraja_total.pop())
+                    if self.jugador_1.puntaje > 21:
                         self.turno+=1
                         return
                 elif self.button_plantarme_jugador_1.collidepoint(pygame.mouse.get_pos()) or self.jugador_1.lose:
                     print('jugador 1:', self.jugador_1.puntaje)
-                    self.turn+=1
+                    self.turno+=1
 
         if self.turno == 2:
             if pygame.mouse.get_pressed()[0]:
-                if self.button_pedir_cartas(pygame.mouse.get_pos()) and not self.jugador_2.lose:
-                    self.jugador_2.addCard(self.baraja_total.pop())
-                    if self.jugador_2 > 21:
+                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and not self.jugador_2.lose:
+                    self.jugador_2.añadirCartas(self.baraja_total.pop())
+                    if self.jugador_2.puntaje > 21:
                         self.turno+=1
                         return
                 elif self.button_plantarme_jugador_2.collidepoint(pygame.mouse.get_pos()) or self.jugador_3.lose:
-                    print('jugador 1:', self.jugador_2.puntaje)
-                    self.turn+=1
+                    print('jugador 2:', self.jugador_2.puntaje)
+                    self.turno+=1
 
         if self.turno == 3:
             if pygame.mouse.get_pressed()[0]:
-                if self.button_pedir_cartas(pygame.mouse.get_pos()) and not self.jugador_3.lose:
-                    self.jugador_3.addCard(self.baraja_total.pop())
-                    if self.jugador_3 > 21:
+                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and not self.jugador_3.lose:
+                    self.jugador_3.añadirCartas(self.baraja_total.pop())
+                    if self.jugador_3.puntaje > 21:
                         self.turno+=1
                         return
                 elif self.button_plantarme_jugador_3.collidepoint(pygame.mouse.get_pos()) or self.jugador_3.lose:
-                    print('jugador 1:', self.jugador_3.puntaje)
-                    self.turn+=1
+                    print('jugador 3:', self.jugador_3.puntaje)
+                    self.turno+=1
 
-        if self.turn == 4:
-            self.stay_crupier()
-            self.final_win_players()
-        
-    def darCarta(self):
-        if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()):
-            if pygame.mouse.get_pressed()[0] and not self.click_button_pedir_cartas:
-                self.click_button_pedir_cartas = True
-                if self.turno == 1:
-                    self.jugador_1.añadirCartas(self.baraja_total.pop())
-                if self.turno == 2:
-                    self.jugador_2.añadirCartas(self.baraja_total.pop())
-                if self.turno == 3:
-                    self.jugador_3.añadirCartas(self.baraja_total.pop())
-        if not pygame.mouse.get_pressed()[0]:
-            self.click_button_pedir_cartas = False
+        if self.turno == 4:
+            print("Crupier")
+            
     
-    #def pideCartas():
-    #    if self
+    def final_win_players(self):
+        #if self.crupier_player.stay or self.crupier_player.lose_status:
+        for i in self.players:
+            if i.score > self.crupier_player.score and not i.player_lose_status:
+                print("Jugador ganó " + str(i))
+                self.show_text('Gano el juego', self.BLUE, 20,i.x_lose, i.y_lose)
+            elif i.score < self.crupier_player.score and not self.crupier_player.lose_status:
+                self.show_text('Perdio el juego', self.RED, 20,i.x_lose, i.y_lose)
+            elif i.score == self.crupier_player.score and not self.crupier_player.lose_status:
+                self.show_text('Empate', self.WHITE, 20,i.x_lose, i.y_lose)
+            elif not i.player_lose_status and self.crupier_player.lose_status:
+                self.show_text('Gano el juego', self.BLUE, 20,i.x_lose, i.y_lose)
+    
