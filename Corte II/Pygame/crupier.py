@@ -1,14 +1,14 @@
 import pygame
 class crupier:
-    def __init__(self, x, y ,list, x_lose, y_lose):
+    def __init__(self, x, y):
         self.x= x
         self.y= y
-        self.list= list
+        self.list= list()
         self.puntaje= 0
         self.lose= False
-        self.xlose= x_lose
-        self.ylose= y_lose
         self.plantarse= False
+        self.pedir= False
+        self.dar= True
 
         self.carta_2= pygame.image.load("Imágenes 2/2V2.jpg")
         self.carta_3= pygame.image.load("Imágenes 2/3V2.jpg")
@@ -23,6 +23,7 @@ class crupier:
         self.carta_K= pygame.image.load("Imágenes 2/K3.jpg")
         self.carta_Q= pygame.image.load("Imágenes 2/Q2.jpg")
         self.carta_A= pygame.image.load("Imágenes 2/as.png")
+        self.carta_al_reves= pygame.image.load("Imágenes 2/carta_volteada.jpg")
 
         self.carta_2= pygame.transform.scale(self.carta_2, (80, 115))
         self.carta_3= pygame.transform.scale(self.carta_3, (80, 115))
@@ -37,10 +38,9 @@ class crupier:
         self.carta_K= pygame.transform.scale(self.carta_K, (80, 115))
         self.carta_Q= pygame.transform.scale(self.carta_Q, (80, 115))
         self.carta_A= pygame.transform.scale(self.carta_A, (80, 115))
+        self.carta_al_reves= pygame.transform.scale(self.carta_al_reves, (80, 115))
     
-    def score(self):
-        for i in self.list:
-            self.puntaje+= int(i)
+    
 
     def dibujarLista(self, screen):
         espacio= self.x
@@ -87,3 +87,13 @@ class crupier:
         else:
             self.puntaje+=int(card)
             self.list.append(card)
+    
+    def score(self):
+        for i in self.list:
+            self.puntaje+= i
+    
+    def dibujarPrimerasCartas(self,screen, x, y):
+        gap = x
+        for i in range(len(self.list)-1):
+            screen.blit(self.carta_al_reves, (gap, self.y))
+            gap+=40

@@ -73,34 +73,6 @@ class challenge:
 
         self.fondo= pygame.transform.scale(self.fondo, (1000, 630))
         self.crupier_img= pygame.transform.scale(self.crupier_img, (300, 200))
-            #Cartas
-        self.carta_2= pygame.image.load("Imágenes 2/2V2.jpg")
-        self.carta_3= pygame.image.load("Imágenes 2/3V2.jpg")
-        self.carta_4= pygame.image.load("Imágenes 2/4V2.jpg")
-        self.carta_5= pygame.image.load("Imágenes 2/5.jpg")
-        self.carta_6= pygame.image.load("Imágenes 2/6.jpg")
-        self.carta_7= pygame.image.load("Imágenes 2/7V2.jpg")
-        self.carta_8= pygame.image.load("Imágenes 2/8.jpg")
-        self.carta_9= pygame.image.load("Imágenes 2/9.jpg")
-        self.carta_10= pygame.image.load("Imágenes 2/10.jpg")
-        self.carta_J= pygame.image.load("Imágenes 2/J2.jpg")
-        self.carta_K= pygame.image.load("Imágenes 2/K3.jpg")
-        self.carta_Q= pygame.image.load("Imágenes 2/Q2.jpg")
-        self.carta_A= pygame.image.load("Imágenes 2/as.png")
-
-        self.carta_2= pygame.transform.scale(self.carta_2, (90, 130))
-        self.carta_3= pygame.transform.scale(self.carta_3, (90, 130))
-        self.carta_4= pygame.transform.scale(self.carta_4, (90, 130))
-        self.carta_5= pygame.transform.scale(self.carta_5, (90, 130))
-        self.carta_6= pygame.transform.scale(self.carta_6, (90, 130))
-        self.carta_7= pygame.transform.scale(self.carta_7, (90, 130))
-        self.carta_8= pygame.transform.scale(self.carta_8, (90, 130))
-        self.carta_9= pygame.transform.scale(self.carta_9, (90, 130))
-        self.carta_10= pygame.transform.scale(self.carta_10, (90, 130))
-        self.carta_J= pygame.transform.scale(self.carta_J, (90, 130))
-        self.carta_K= pygame.transform.scale(self.carta_K, (90, 130))
-        self.carta_Q= pygame.transform.scale(self.carta_Q, (90, 130))
-        self.carta_A= pygame.transform.scale(self.carta_A, (90, 130))
 
         #Botones
         self.button_start= pygame.Rect(404, 85, 110, 27)
@@ -117,16 +89,12 @@ class challenge:
 
         #Barajas
         self.baraja_total= list()
-        self.baraja_crupier= list()
-        self.baraja_jugador_1= list()
-        self.baraja_jugador_2= list()
-        self.baraja_jugador_3= list()
 
         #Jugadores
-        self.jugador_1= jugador(70, 180, self.baraja_jugador_1, 120, 290)
-        self.jugador_2= jugador(400, 330, self.baraja_jugador_2, 445, 430)
-        self.jugador_3= jugador(770, 180, self.baraja_jugador_3, 760, 290)
-        self.crupier= crupier(570, 90, self.baraja_crupier, 530, 280)
+        self.jugador_1= jugador(70, 180, 120, 290)
+        self.jugador_2= jugador(400, 330, 445, 430)
+        self.jugador_3= jugador(770, 180, 760, 290)
+        self.crupier= crupier(570, 90)
 
         #Lista de jugadores
         self.lista_jugadores= list()
@@ -134,6 +102,7 @@ class challenge:
         self.lista_jugadores.append(self.jugador_2)
         self.lista_jugadores.append(self.jugador_3)
 
+        self.puntaje_crupier= 0
         self.turno= 1
 
 #Funcion principal
@@ -158,6 +127,17 @@ class challenge:
             elif(self.main_menu.getSelectedOption() == 2):
                 self.dibujarFooter(self.white)
                 self.dibujarVentanaBlackJack()
+                self.llenarBarajaTotal()
+                self.iniciar()
+                self.juego()
+                self.dibujarCartas()
+                if self.turno <= 3:
+                    self.crupier.dibujarLista(self.screen)
+                    self.crupier.dibujarPrimerasCartas(self.screen,615,76)
+                else:
+                    self.crupier.dibujarLista(self.screen)
+                self.jugadorPierde()
+                self.crupierSePlanta()
                 self.clickEnLogoGit()
             self.main_menu.draw()
             pygame.display.flip()
@@ -338,10 +318,6 @@ class challenge:
         self.mostrarTexto("JUGADOR 1", self.white, 18, 84, 310, "Arial")
         self.mostrarTexto("JUGADOR 2", self.white, 18, 407, 449, "Arial")
         self.mostrarTexto("JUGADOR 2", self.white, 18, 720, 310, "Arial")
-        self.llenarBarajaTotal()
-        self.iniciar()
-        self.dibujarCartas()
-        self.juego()
 
 
     def iniciar(self):
@@ -352,7 +328,6 @@ class challenge:
                 print(self.jugador_1.list)
                 print(self.jugador_2.list)
                 print(self.jugador_3.list)
-                print(self.crupier.list)
         if not pygame.mouse.get_pressed()[0]:
             self.click_button_start = False
     
@@ -377,18 +352,32 @@ class challenge:
 
     def jugadorPierde(self):
         for i in self.lista_jugadores:
-            if i.score > 21:
+            if i.puntaje > 21:
                 i.lose = True
-                self.mostrarTexto('Está fuera', self.white, 20,i.x_lose, i.y_lose, "Arial")
+                self.mostrarTexto('Está fuera', self.black, 20,i.xlose+5, i.ylose + 45, "Arial")
     
-    
+    def crupierPide(self):
+        while self.crupier.puntaje <=16:
+            self.crupier.añadirCartas(self.baraja_total.pop())
+
+    def crupierSePlanta(self):
+        if self.crupier.puntaje<=16 and self.turno > 3:
+            self.crupier.plantarse = True
+            self.crupier.añadirCartas(self.baraja_total.pop())
+        if self.crupier.puntaje > 21 and self.turno >3: 
+            self.crupier.lose = True
+            self.mostrarTexto('Está fuera', self.white, 20, 751, 52, "Arial")
         
     def repartirCartas(self):
-        for i in range(2):
-            self.jugador_1.añadirCartas(self.baraja_total.pop())
-            self.jugador_2.añadirCartas(self.baraja_total.pop())
-            self.jugador_3.añadirCartas(self.baraja_total.pop())
-            self.crupier.añadirCartas(self.baraja_total.pop())
+        self.jugador_1.añadirCartas(self.baraja_total.pop())
+        self.jugador_2.añadirCartas(self.baraja_total.pop())
+        self.jugador_3.añadirCartas(self.baraja_total.pop())
+        self.jugador_1.añadirCartas(self.baraja_total.pop())
+        self.jugador_2.añadirCartas(self.baraja_total.pop())
+        self.jugador_3.añadirCartas(self.baraja_total.pop())
+
+        self.crupier.añadirCartas(self.baraja_total.pop())
+        self.crupier.añadirCartas(self.baraja_total.pop())
     
     def dibujarCartas(self):
         for i in self.lista_jugadores:
@@ -397,7 +386,7 @@ class challenge:
     def juego(self):
         if self.turno == 1:
             if pygame.mouse.get_pressed()[0]:
-                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and not self.jugador_1.lose:
+                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and len(self.baraja_total)!=0 and not self.jugador_1.lose:
                     self.jugador_1.añadirCartas(self.baraja_total.pop())
                     if self.jugador_1.puntaje > 21:
                         self.turno+=1
@@ -408,40 +397,37 @@ class challenge:
 
         if self.turno == 2:
             if pygame.mouse.get_pressed()[0]:
-                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and not self.jugador_2.lose:
+                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and len(self.baraja_total)!=0 and not self.jugador_2.lose:
                     self.jugador_2.añadirCartas(self.baraja_total.pop())
                     if self.jugador_2.puntaje > 21:
                         self.turno+=1
                         return
-                elif self.button_plantarme_jugador_2.collidepoint(pygame.mouse.get_pos()) or self.jugador_3.lose:
+                elif self.button_plantarme_jugador_2.collidepoint(pygame.mouse.get_pos()) or self.jugador_2.lose:
                     print('jugador 2:', self.jugador_2.puntaje)
                     self.turno+=1
 
         if self.turno == 3:
             if pygame.mouse.get_pressed()[0]:
-                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and not self.jugador_3.lose:
+                if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()) and len(self.baraja_total)!=0 and not self.jugador_3.lose:
                     self.jugador_3.añadirCartas(self.baraja_total.pop())
                     if self.jugador_3.puntaje > 21:
                         self.turno+=1
                         return
                 elif self.button_plantarme_jugador_3.collidepoint(pygame.mouse.get_pos()) or self.jugador_3.lose:
-                    print('jugador 3:', self.jugador_3.puntaje)
+                    print('Jugador 3: ',self.jugador_3.puntaje)
                     self.turno+=1
-
         if self.turno == 4:
-            print("Crupier")
-            
-    
-    def final_win_players(self):
-        #if self.crupier_player.stay or self.crupier_player.lose_status:
-        for i in self.players:
-            if i.score > self.crupier_player.score and not i.player_lose_status:
-                print("Jugador ganó " + str(i))
-                self.show_text('Gano el juego', self.BLUE, 20,i.x_lose, i.y_lose)
-            elif i.score < self.crupier_player.score and not self.crupier_player.lose_status:
-                self.show_text('Perdio el juego', self.RED, 20,i.x_lose, i.y_lose)
-            elif i.score == self.crupier_player.score and not self.crupier_player.lose_status:
-                self.show_text('Empate', self.WHITE, 20,i.x_lose, i.y_lose)
-            elif not i.player_lose_status and self.crupier_player.lose_status:
-                self.show_text('Gano el juego', self.BLUE, 20,i.x_lose, i.y_lose)
+            self.crupierSePlanta()
+            self.ganadores()
+
+    def ganadores(self):
+        for i in self.lista_jugadores:
+            if i.puntaje > self.crupier.puntaje and not i.lose:
+                self.mostrarTexto('Gano el juego', self.white, 20,i.xlose, i.ylose, "Arial")
+            elif i.puntaje < self.crupier.puntaje and not self.crupier.lose:
+                self.mostrarTexto('Perdio el juego', self.white, 20,i.xlose, i.ylose, "Arial")
+            elif i.puntaje == self.crupier.puntaje and not self.crupier.lose:
+                self.mostrarTexto('Empate', self.white, 20,i.xlose, i.ylose, "Arial")
+            elif not i.lose and self.crupier.lose:
+                self.mostrarTexto('Gano el juego', self.white, 20,i.xlose, i.ylose, "Arial")
     

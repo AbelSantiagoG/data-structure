@@ -1,13 +1,16 @@
 import pygame
 class jugador:
-    def __init__(self, x, y ,list, x_lose, y_lose):
+    def __init__(self, x, y , x_lose, y_lose):
         self.x= x
         self.y= y
-        self.list= list
+        self.list= list()
         self.puntaje= 0
+        self.pplantarse = False
+        self.pedir = False
         self.lose= False
         self.xlose= x_lose
         self.ylose= y_lose
+        self.crupier_da_carta= True
 
         self.carta_2= pygame.image.load("Imágenes 2/2V2.jpg")
         self.carta_3= pygame.image.load("Imágenes 2/3V2.jpg")
