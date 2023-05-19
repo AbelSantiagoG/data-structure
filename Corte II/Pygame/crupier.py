@@ -1,10 +1,14 @@
 import pygame
 class crupier:
-    def __init__(self, x, y ,list):
+    def __init__(self, x, y ,list, x_lose, y_lose):
         self.x= x
         self.y= y
         self.list= list
         self.puntaje= 0
+        self.lose= False
+        self.xlose= x_lose
+        self.ylose= y_lose
+
         self.carta_2= pygame.image.load("Imágenes 2/2V2.jpg")
         self.carta_3= pygame.image.load("Imágenes 2/3V2.jpg")
         self.carta_4= pygame.image.load("Imágenes 2/4V2.jpg")
@@ -34,10 +38,8 @@ class crupier:
         self.carta_A= pygame.transform.scale(self.carta_A, (80, 115))
     
     def score(self):
-        p=0
         for i in self.list:
-            puntaje+= int(i)
-        return p
+            self.puntaje+= int(i)
 
     def dibujarLista(self, screen):
         espacio= self.x
@@ -68,4 +70,19 @@ class crupier:
                 screen.blit(self.carta_Q, (espacio, self.y))
             if j == "K":
                 screen.blit(self.carta_K, (espacio, self.y))
-            espacio+= 50
+            espacio+= 40
+    
+    def añadirCartas(self, card):
+        if card=='J' or card == 'Q' or card == 'K':
+            self.list.append(card)
+            self.score+=10
+        elif card == 'As':
+            if self.score <=10:
+                self.score+=11
+                self.list.append(card)
+            elif self.score >10:
+                self.score+=1
+                self.list.append(card)
+        else:
+            self.score+=int(card)
+            self.list.append(card)

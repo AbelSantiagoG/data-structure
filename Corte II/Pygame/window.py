@@ -122,10 +122,10 @@ class challenge:
         self.baraja_jugador_3= list()
 
         #Jugadores
-        self.jugador_1= jugador(100, 290, self.baraja_jugador_1)
-        self.jugador_2= jugador(425, 430, self.baraja_jugador_2)
-        self.jugador_3= jugador(740, 290, self.baraja_jugador_3)
-        self.crupier= crupier(510, 260, self.baraja_crupier)
+        self.jugador_1= jugador(70, 180, self.baraja_jugador_1, 120, 290)
+        self.jugador_2= jugador(400, 330, self.baraja_jugador_2, 445, 430)
+        self.jugador_3= jugador(770, 180, self.baraja_jugador_3, 760, 290)
+        self.crupier= crupier(570, 90, self.baraja_crupier, 530, 280)
 
         #Lista de jugadores
         self.lista_jugadores= list()
@@ -133,6 +133,8 @@ class challenge:
         self.lista_jugadores.append(self.jugador_2)
         self.lista_jugadores.append(self.jugador_3)
         self.lista_jugadores.append(self.crupier)
+
+        self.turno= 1
 
 #Funcion principal
 
@@ -378,3 +380,9 @@ class challenge:
     def dibujarCartas(self):
         for i in self.lista_jugadores:
             i.dibujarLista(self.screen)
+    
+    def jugadorPierde(self):
+        for i in self.players:
+            if i.score > 21:
+                i.lose = True
+                self.show_text('Está fuera', self.white, 20,i.xlose, i.ylose)
