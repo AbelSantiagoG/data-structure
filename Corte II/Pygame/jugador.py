@@ -72,7 +72,7 @@ class jugador:
         if card=='J' or card == 'Q' or card == 'K':
             self.list.append(card)
             self.puntaje+=10
-        elif card == 'As':
+        elif card == 'as':
             if self.puntaje <=10:
                 self.puntaje+=11
                 self.list.append(card)

@@ -113,6 +113,7 @@ class challenge:
         self.click_button_plantarme_jugador_1= False
         self.click_button_plantarme_jugador_2= False
         self.click_button_plantarme_jugador_3= False
+        self.click_button_pedir_cartas= False
 
         #Barajas
         self.baraja_total= list()
@@ -341,6 +342,10 @@ class challenge:
         self.mostrarTexto("JUGADOR 2", self.white, 18, 720, 310, "Arial")
         self.iniciar()
         self.dibujarCartas()
+        self.jugadorPierde()
+        self.juego()
+        self.darCarta()
+
 
     def iniciar(self):
         if self.button_start.collidepoint(pygame.mouse.get_pos()):
@@ -386,7 +391,60 @@ class challenge:
             i.dibujarLista(self.screen)
     
     def jugadorPierde(self):
-        for i in self.players:
-            if i.score > 21:
+        for i in self.lista_jugadores:
+            if i.puntaje > 21:
                 i.lose = True
-                self.show_text('Está fuera', self.white, 20,i.xlose, i.ylose)
+    
+    def juego(self):
+        if self.turno == 1:
+            if pygame.mouse.get_pressed()[0]:
+                if self.button_pedir_cartas(pygame.mouse.get_pos()) and not self.jugador_1.lose:
+                    self.jugador_1.addCard(self.baraja_total.pop())
+                    if self.jugador_1 > 21:
+                        self.turno+=1
+                        return
+                elif self.button_plantarme_jugador_1.collidepoint(pygame.mouse.get_pos()) or self.jugador_1.lose:
+                    print('jugador 1:', self.jugador_1.puntaje)
+                    self.turn+=1
+
+        if self.turno == 2:
+            if pygame.mouse.get_pressed()[0]:
+                if self.button_pedir_cartas(pygame.mouse.get_pos()) and not self.jugador_2.lose:
+                    self.jugador_2.addCard(self.baraja_total.pop())
+                    if self.jugador_2 > 21:
+                        self.turno+=1
+                        return
+                elif self.button_plantarme_jugador_2.collidepoint(pygame.mouse.get_pos()) or self.jugador_3.lose:
+                    print('jugador 1:', self.jugador_2.puntaje)
+                    self.turn+=1
+
+        if self.turno == 3:
+            if pygame.mouse.get_pressed()[0]:
+                if self.button_pedir_cartas(pygame.mouse.get_pos()) and not self.jugador_3.lose:
+                    self.jugador_3.addCard(self.baraja_total.pop())
+                    if self.jugador_3 > 21:
+                        self.turno+=1
+                        return
+                elif self.button_plantarme_jugador_3.collidepoint(pygame.mouse.get_pos()) or self.jugador_3.lose:
+                    print('jugador 1:', self.jugador_3.puntaje)
+                    self.turn+=1
+
+        if self.turn == 4:
+            self.stay_crupier()
+            self.final_win_players()
+        
+    def darCarta(self):
+        if self.button_pedir_cartas.collidepoint(pygame.mouse.get_pos()):
+            if pygame.mouse.get_pressed()[0] and not self.click_button_pedir_cartas:
+                self.click_button_pedir_cartas = True
+                if self.turno == 1:
+                    self.jugador_1.añadirCartas(self.baraja_total.pop())
+                if self.turno == 2:
+                    self.jugador_2.añadirCartas(self.baraja_total.pop())
+                if self.turno == 3:
+                    self.jugador_3.añadirCartas(self.baraja_total.pop())
+        if not pygame.mouse.get_pressed()[0]:
+            self.click_button_pedir_cartas = False
+    
+    #def pideCartas():
+    #    if self
