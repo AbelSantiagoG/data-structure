@@ -349,6 +349,10 @@ class challenge:
                 self.llenarBarajaTotal()
                 self.repartirCartas()
                 self.dibujarCartas()
+                print(self.jugador_1.list)
+                print(self.jugador_2.list)
+                print(self.jugador_3.list)
+                print(self.crupier.list)
         if not pygame.mouse.get_pressed()[0]:
             self.click_button_start = False
     
@@ -372,10 +376,10 @@ class challenge:
 
     def repartirCartas(self):
         for i in range(2):
-            self.jugador_1.list.append(self.baraja_total.pop())
-            self.jugador_2.list.append(self.baraja_total.pop())
-            self.jugador_3.list.append(self.baraja_total.pop())
-            self.crupier.list.append(self.baraja_total.pop())
+            self.jugador_1.añadirCartas(self.baraja_total.pop())
+            self.jugador_2.añadirCartas(self.baraja_total.pop())
+            self.jugador_3.añadirCartas(self.baraja_total.pop())
+            self.crupier.añadirCartas(self.baraja_total.pop())
     
     def dibujarCartas(self):
         for i in self.lista_jugadores:

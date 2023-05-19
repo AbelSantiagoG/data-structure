@@ -75,14 +75,14 @@ class crupier:
     def añadirCartas(self, card):
         if card=='J' or card == 'Q' or card == 'K':
             self.list.append(card)
-            self.score+=10
+            self.puntaje+=10
         elif card == 'As':
-            if self.score <=10:
-                self.score+=11
+            if self.puntaje <=10:
+                self.puntaje+=11
                 self.list.append(card)
-            elif self.score >10:
-                self.score+=1
+            elif self.puntaje >10:
+                self.puntaje+=1
                 self.list.append(card)
         else:
-            self.score+=int(card)
+            self.puntaje+=int(card)
             self.list.append(card)
