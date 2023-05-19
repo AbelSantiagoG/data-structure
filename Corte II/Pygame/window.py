@@ -5,6 +5,7 @@ import webbrowser
 import pygame, sys
 import random
 from jugador import jugador
+from crupier import crupier
 
 class challenge:
     def __init__(self):
@@ -85,6 +86,21 @@ class challenge:
         self.carta_J= pygame.image.load("Imágenes 2/J2.jpg")
         self.carta_K= pygame.image.load("Imágenes 2/K3.jpg")
         self.carta_Q= pygame.image.load("Imágenes 2/Q2.jpg")
+        self.carta_A= pygame.image.load("Imágenes 2/as.png")
+
+        self.carta_2= pygame.transform.scale(self.carta_2, (90, 130))
+        self.carta_3= pygame.transform.scale(self.carta_3, (90, 130))
+        self.carta_4= pygame.transform.scale(self.carta_4, (90, 130))
+        self.carta_5= pygame.transform.scale(self.carta_5, (90, 130))
+        self.carta_6= pygame.transform.scale(self.carta_6, (90, 130))
+        self.carta_7= pygame.transform.scale(self.carta_7, (90, 130))
+        self.carta_8= pygame.transform.scale(self.carta_8, (90, 130))
+        self.carta_9= pygame.transform.scale(self.carta_9, (90, 130))
+        self.carta_10= pygame.transform.scale(self.carta_10, (90, 130))
+        self.carta_J= pygame.transform.scale(self.carta_J, (90, 130))
+        self.carta_K= pygame.transform.scale(self.carta_K, (90, 130))
+        self.carta_Q= pygame.transform.scale(self.carta_Q, (90, 130))
+        self.carta_A= pygame.transform.scale(self.carta_A, (90, 130))
 
         #Botones
         self.button_start= pygame.Rect(404, 85, 110, 27)
@@ -106,10 +122,10 @@ class challenge:
         self.baraja_jugador_3= list()
 
         #Jugadores
-        self.jugador_1= jugador(40, 250, self.baraja_jugador_1)
-        self.jugador_2= jugador(350, 300, self.baraja_jugador_2)
-        self.jugador_3= jugador(660, 250, self.baraja_jugador_3)
-        self.crupier= jugador(500, 250, self.baraja_crupier)
+        self.jugador_1= jugador(100, 290, self.baraja_jugador_1)
+        self.jugador_2= jugador(425, 430, self.baraja_jugador_2)
+        self.jugador_3= jugador(740, 290, self.baraja_jugador_3)
+        self.crupier= crupier(510, 260, self.baraja_crupier)
 
         #Lista de jugadores
         self.lista_jugadores= list()
@@ -330,6 +346,7 @@ class challenge:
                 self.click_button_start = True
                 self.llenarBarajaTotal()
                 self.repartirCartas()
+                self.dibujarCartas()
         if not pygame.mouse.get_pressed()[0]:
             self.click_button_start = False
     
@@ -339,41 +356,25 @@ class challenge:
             random.shuffle(numeros)
             for i in numeros:
                 if self.baraja_total.count(i) < 4:
-                    self.baraja_total.append(i)
-    
+                    if i== 1:
+                        self.baraja_total.append("as")
+                    elif i == 11:
+                        self.baraja_total.append("J")
+                    elif i == 12:
+                        self.baraja_total.append("Q")
+                    elif i == 13:
+                        self.baraja_total.append("K")
+                    else:
+                        self.baraja_total.append(str(i))
+            
+
     def repartirCartas(self):
         for i in range(2):
             self.jugador_1.list.append(self.baraja_total.pop())
             self.jugador_2.list.append(self.baraja_total.pop())
             self.jugador_3.list.append(self.baraja_total.pop())
-            self.baraja_crupier.append(self.baraja_total.pop())
+            self.crupier.list.append(self.baraja_total.pop())
     
     def dibujarCartas(self):
         for i in self.lista_jugadores:
-            for j in i.list:
-                #if j == "1":
-                    #self.dibujarImagenes(self.carta_2, i.x, i.y)
-                if j == "2":
-                    self.dibujarImagenes(self.carta_2, i.x, i.y)
-                if j == "3":
-                    self.dibujarImagenes(self.carta_3, i.x, i.y)
-                if j == "4":
-                    self.dibujarImagenes(self.carta_4, i.x, i.y)
-                if j == "5":
-                    self.dibujarImagenes(self.carta_5, i.x, i.y)
-                if j == "6":
-                    self.dibujarImagenes(self.carta_6, i.x, i.y)
-                if j == "7":
-                    self.dibujarImagenes(self.carta_7, i.x, i.y)
-                if j == "8":
-                    self.dibujarImagenes(self.carta_8, i.x, i.y)
-                if j == "9":
-                    self.dibujarImagenes(self.carta_9, i.x, i.y)
-                if j == "10":
-                    self.dibujarImagenes(self.carta_10, i.x, i.y)
-                if j == "11":
-                    self.dibujarImagenes(self.carta_J, i.x, i.y)
-                if j == "12":
-                    self.dibujarImagenes(self.carta_Q, i.x, i.y)
-                if j == "13":
-                    self.dibujarImagenes(self.carta_K, i.x, i.y)
+            i.dibujarLista(self.screen)
